@@ -18,7 +18,8 @@ copyright: Copyright &copy; 2025 Alkrei
 theme:
   name: material
   custom_dir: docs/overrides
-  font: false
+  font:
+    text: JetBrains Mono
   palette:
     - media: "(prefers-color-scheme)"
       toggle:
