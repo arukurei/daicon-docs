@@ -31,9 +31,13 @@ h1, h2, h3, h4, h5, h6 {
     /* color: #333; */
 }
 
+body {
+  font-family: 'JetBrains Mono';
+}
+
 :root {
-  --md-text-font-family: "JetBrains Mono";
-  --md-code-font-family: "JetBrains Mono";
+  --md-text-font: "JetBrains Mono";
+  --md-code-font: "JetBrains Mono";
 }
 
 [data-md-color-scheme="slate"] {
