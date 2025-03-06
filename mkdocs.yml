@@ -90,6 +90,7 @@ plugins:
       docs_structure: suffix
       languages:
         - locale: en
+          default: true
           name: English
           build: true
         - locale: ru
