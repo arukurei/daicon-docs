@@ -1,7 +1,7 @@
 # Project information
 site_name: Daicon Docs
 site_author: Alkrei
-site_url: https://daicon-docs.com
+site_url: !ENV READTHEDOCS_CANONICAL_URL
 site_description: >-
   Simulate 3D environments in 2D and create depth of space in your games
 docs_dir: docs
