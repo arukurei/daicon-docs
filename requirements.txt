@@ -1,6 +1,6 @@
 mkdocs
 mkdocs-material
-mkdocs-static-i18n==1.3.0
+mkdocs-static-i18n==1.2.0
 mkdocs-git-revision-date-localized-plugin
 mkdocs-git-authors-plugin
 mkdocs-izsam-video
