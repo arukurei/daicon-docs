@@ -3,25 +3,25 @@
   font-family: "JetBrains Mono";
   font-weight: normal;
   font-style: normal;
-  src: url("/assets/fonts/JetBrainsMono-Regular.ttf");
+  src: url("../assets/fonts/JetBrainsMono-Regular.ttf");
 }
 @font-face {
   font-family: "JetBrains Mono";
   font-weight: normal;
   font-style: italic;
-  src: url("/assets/fonts/JetBrainsMono-Italic.ttf");
+  src: url("../assets/fonts/JetBrainsMono-Italic.ttf");
 }
 @font-face {
   font-family: "JetBrains Mono";
   font-weight: bold;
   font-style: normal;
-  src: url("/assets/fonts/JetBrainsMono-Bold.ttf");
+  src: url("../assets/fonts/JetBrainsMono-Bold.ttf");
 }
 @font-face {
   font-family: "JetBrains Mono";
   font-weight: bold;
   font-style: italic;
-  src: url("/assets/fonts/JetBrainsMono-BoldItalic.ttf");
+  src: url("../assets/fonts/JetBrainsMono-BoldItalic.ttf");
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -33,6 +33,8 @@ h1, h2, h3, h4, h5, h6 {
 
 body {
   font-family: 'JetBrains Mono';
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
