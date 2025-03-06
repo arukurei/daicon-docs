@@ -1,5 +1,5 @@
 ---
-template: home.ru.html
+template: home.en.html
 title: Daicon Docs
 ---
 
