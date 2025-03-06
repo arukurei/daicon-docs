@@ -89,14 +89,11 @@ plugins:
   - i18n:
       docs_structure: suffix
       languages:
-        default:
-            name: Default (en)
-            build: true
-        en:
+        - locale: en
           default: true
           name: English
           build: true
-        ru:
+        - locale: ru
           name: Русский
           build: true
   - mkdocs-izsam-video
