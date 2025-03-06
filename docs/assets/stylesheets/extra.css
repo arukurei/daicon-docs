@@ -1,0 +1,47 @@
+/* Fonts */
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: normal;
+  font-style: normal;
+  src: url("/assets/fonts/JetBrainsMono-Regular.ttf");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: normal;
+  font-style: italic;
+  src: url("/assets/fonts/JetBrainsMono-Italic.ttf");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: bold;
+  font-style: normal;
+  src: url("/assets/fonts/JetBrainsMono-Bold.ttf");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: bold;
+  font-style: italic;
+  src: url("/assets/fonts/JetBrainsMono-BoldItalic.ttf");
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'JetBrains Mono';
+    font-weight: bold;
+    /* Другие стили, например, цвет: */
+    /* color: #333; */
+}
+
+:root {
+  --md-text-font: "JetBrains Mono";
+  --md-code-font: "JetBrains Mono";
+}
+
+[data-md-color-scheme="slate"] {
+  --md-hue: 230;
+  --md-primary-fg-color: #7944f3;
+  --md-default-bg-color: #1c2127;
+}
+
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #7944f3;
+}

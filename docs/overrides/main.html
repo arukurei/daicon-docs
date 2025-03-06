@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+<!-- Extra style sheets (can't be set in mkdocs.yml due to content hash) -->
+{% block extrahead %}
+  <link rel="stylesheet" href="{{ '../assets/stylesheets/custom.7c86dd97.min.css' | url }}">
+{% endblock %}
+
+<!-- Announcement bar -->
+{% block announce %}
+  For updates follow <strong>@arukurei</strong> on
+  <a rel="me" href="https://t.me/G_Quasar">
+    <span class="twemoji twitter">
+      {% include ".icons/fontawesome/brands/telegram.svg" %}
+    </span>
+    <strong>Telegram</strong>
+  </a>
+  and
+  <a href="https://bsky.app/profile/arukurei.bsky.social">
+    <span class="twemoji twitter">
+      {% include ".icons/fontawesome/brands/bluesky.svg" %}
+    </span>
+    <strong>Bluesky</strong>
+  </a>
+{% endblock %}
+
+<!-- Theme-related JavaScript -->
+{% block scripts %}
+  {{ super() }}
+{% endblock %}

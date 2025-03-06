@@ -1,0 +1,7 @@
+mkdocs
+mkdocs-material
+mkdocs-i18n
+mkdocs-static-i18n
+mkdocs-git-revision-date-localized-plugin
+mkdocs-git-authors-plugin
+mkdocs-izsam-video

@@ -1,0 +1,181 @@
+{
+  "main": {
+    "id": "345c838821c7b499",
+    "type": "split",
+    "children": [
+      {
+        "id": "fee0dbb4b5ed0990",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "85b757898c84200c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "contributing.en.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "contributing.en"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6f42fcf80e355368",
+    "type": "split",
+    "children": [
+      {
+        "id": "583122c5df5098f2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6ba0e7068b88e009",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Файловый менеджер"
+            }
+          },
+          {
+            "id": "140ea9a0c6233e89",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Поиск"
+            }
+          },
+          {
+            "id": "dd3d4b87f5616640",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Закладки"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "09d42a83f6dc2db9",
+    "type": "split",
+    "children": [
+      {
+        "id": "0fe5c7cc11cfcd26",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6b8566d6d1bed3d9",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "getting-started/setup.ru.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Обратные ссылки для setup.ru"
+            }
+          },
+          {
+            "id": "29c5e2272cb87a06",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "getting-started/setup.ru.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Исходящие ссылки из setup.ru"
+            }
+          },
+          {
+            "id": "179935bbff8a0acd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Теги"
+            }
+          },
+          {
+            "id": "f4e5dc2dd33b5cc9",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "getting-started/setup.ru.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Структура setup.ru"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Меню быстрого перехода": false,
+      "graph:Граф": false,
+      "canvas:Создать новый холст": false,
+      "daily-notes:Сегодняшняя заметка": false,
+      "templates:Вставить шаблон": false,
+      "command-palette:Открыть палитру команд": false
+    }
+  },
+  "active": "85b757898c84200c",
+  "lastOpenFiles": [
+    "getting-started/setup.ru.md",
+    "README.md",
+    "getting-started/setup.en.md",
+    "contributing.en.md",
+    "getting-started/getting_started.en.md",
+    "getting-started/getting_started.ru.md",
+    "contributing.ru.md"
+  ]
+}

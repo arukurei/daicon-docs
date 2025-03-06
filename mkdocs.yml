@@ -1,0 +1,125 @@
+# Project information
+site_name: Daicon Docs
+site_author: Alkrei
+site_url: !ENV READTHEDOCS_CANONICAL_URL
+site_description: >-
+  Simulate 3D environments in 2D and create depth of space in your games
+docs_dir: docs
+exclude_docs: overrides
+
+# Repository
+repo_name: arukurei/daicon-docs
+repo_url: https://github.com/arukurei/daicon-docs
+
+# Copyright
+copyright: Copyright &copy; 2025 Alkrei
+
+# Configuration
+theme:
+  name: material
+  custom_dir: docs/overrides
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: deep purple
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - announce.dismiss
+    - search.suggest
+    - search.highlight
+    - search.share
+
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.tracking
+    - navigation.top
+    - navigation.footer
+
+    - toc.follow
+  favicon: assets/images/favicon.png
+  logo: assets/images/favicon.png
+  icon:
+    repo: fontawesome/brands/github-alt
+
+# Additional configuration
+extra:
+  social:
+    - icon: octicons/mark-github-24
+      link: https://github.com/arukurei
+      name: GitHub
+    - icon: fontawesome/brands/itch-io
+      link: https://alkrei.itch.io
+      name: Itch.io
+    - icon: fontawesome/brands/bluesky
+      link: https://bsky.app/profile/arukurei.bsky.social
+      name: My bluesky channel
+    - icon: fontawesome/brands/telegram
+      link: https://t.me/G_Quasar
+      name: My own telegram channel
+extra_css:
+  - assets/stylesheets/extra.css
+
+# Extensions
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+# Plugins
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      default_language: en
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: ru
+          name: Русский
+          build: true
+  - mkdocs-izsam-video
+  - git-authors
+  - git-revision-date-localized:
+     enable_creation_date: true
+
+# Page tree
+nav:
+  - Home: index.md
+  - Getting started:
+      - Installation: getting-started/getting_started.md
+      - Setup: getting-started/setup.md
+      - Creating your game: getting-started/creating_your_game.md
+  - Manual:
+      - Core: manual/core.md
+      - Mesh: manual/mesh.md
+  - Node Reference:
+      - Daicon: node-reference/daicon.md
+      - DaiconMap: node-reference/daicon_map.md
+      - DaiconMapLayer: node-reference/daicon_map_layer.md
+      - KinematicDaicon: node-reference/kinematic_daicon.md
+      - StaticDaicon: node-reference/static_daicon.md
+      - AnimatedDaicon: node-reference/animated_daicon.md
+  - Contributing: contributing.md
+  - Made with Daicon:
+      - Demo: made-with-daicon/demo.md
+      - Made with Daicon: made-with-daicon/made_with_daicon.md
