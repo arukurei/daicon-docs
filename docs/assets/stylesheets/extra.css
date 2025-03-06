@@ -31,12 +31,6 @@ h1, h2, h3, h4, h5, h6 {
     /* color: #333; */
 }
 
-body {
-  font-family: 'JetBrains Mono';
-  font-weight: normal;
-  font-style: normal;
-}
-
 :root {
   --md-text-font: "JetBrains Mono";
   --md-code-font: "JetBrains Mono";
