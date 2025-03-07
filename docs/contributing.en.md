@@ -50,4 +50,4 @@ Raise any question on the [Ask a Question](https://github.com/arukurei/daicon-do
 ---
 ## ❤️ Donations
 
-If you like Daicon and want to support its development, you can donate to the project via [PayPal](https://www.paypal.com/donate/?hosted_button_id=LF5SHGQDXK2PG) or [ItchIO](). Your support is very much appreciated and helps keep the project going!
+If you like Daicon and want to support its development, you can donate to the project via [PayPal](https://www.paypal.com/donate/?hosted_button_id=LF5SHGQDXK2PG) or [ItchIO](https://alkrei.itch.io/daicon). Your support is very much appreciated and helps keep the project going!
