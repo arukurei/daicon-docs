@@ -1,0 +1,46 @@
+{% extends "main.html" %}
+
+{% block tabs %}
+  {{ super() }}
+
+  <!-- Additional styles for landing page -->
+  <style>
+    .md-header{position:initial}
+    .md-main__inner{margin:0}
+    .md-content{display:none}
+    @media screen and (min-width:60em){.md-sidebar--secondary{display:none}}
+    @media screen and (min-width:76.25em){.md-sidebar--primary{display:none}}
+  </style>
+
+  <!-- Hero for landing page -->
+  <section class="mdx-container">
+    <div class="md-grid md-typeset">
+      <div class="mdx-hero">
+        <div class="mdx-hero__image">
+          <img src="../assets/images/docs_logo.png" alt="" width="400" height="400" draggable="false">
+        </div>
+
+        <div class="mdx-hero__content">
+          <h1>Daicon - 2.5D Godotプラグイン</h1>
+          <p>3D環境を2Dでシミュレートし、ゲームに奥行きのある空間を作り出します。5分でセットアップ。</p>
+
+          <a href="{{ 'ja/getting-started/getting_started/' | url }}"
+             title="{{ page.next_page.title | e }}"
+             class="md-button md-button--primary">
+            クイック・スタート
+          </a>
+          <a href="{{ 'ja/node-reference/daicon/' | url }}"
+             title="Daicon Nodes"
+             class="md-button">
+            ハンドブック
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+<!-- Content -->
+{% block content %}{% endblock %}
+<!-- Application footer -->
+{% block footer %}{% endblock %}

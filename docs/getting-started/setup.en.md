@@ -77,7 +77,7 @@ To create an environment, the plugin offers 2 nodes with similar working princip
 
 As you may have noticed, many parameters are missing. This is to ensure the security and correctness of the kernel.
 !!! Example
-	For example, the **Transform Position3D** section is synchronized with **Position2D**. When moving a dicon node in its native 2D space, the 3D kernel changes its position accordingly.
+	For example, the **Transform Position3D** section is synchronized with **Position2D**. When moving a daicon node in its native 2D space, the 3D kernel changes its position accordingly.
 
 !!! note
 	Remember, you can always get absolute access to the kernel and all its parameters through code.
@@ -85,13 +85,13 @@ As you may have noticed, many parameters are missing. This is to ensure the secu
 ![Pasted image 20250222102256.png](../assets/images/pasted-images/Pasted%20image%2020250222102256.png)
 ![Pasted image 20250222102350.png](../assets/images/pasted-images/Pasted%20image%2020250222102350.png)
 /// caption
-<small>Position2D = Vector2D(0, 0); Position3D = Vecotr3D(0, 0, -0.5)</small>
+<small>Position2D = Vector2D(0, 0); Position3D = Vector3D(0, 0, -0.5)</small>
 ///
 
 ![Pasted image 20250222102459.png](../assets/images/pasted-images/Pasted%20image%2020250222102459.png)
 ![Pasted image 20250222102539.png](../assets/images/pasted-images/Pasted%20image%2020250222102539.png)
 /// caption
-<small>Position2D = Vector2D(-163, -157); Position3D = Vecotr3D(-10.1875, 0, -10.3125)</small>
+<small>Position2D = Vector2D(-163, -157); Position3D = Vector3D(-10.1875, 0, -10.3125)</small>
 ///
 
 #### The Mesha Library
@@ -160,7 +160,7 @@ Create a player:
 - Y 3D - position of the character on the Z axis
 - Mesh - cell for mash-node that is embedded in the core (after installation you can see it in the 3D section).
 - Shape - a mesh for shape-node which is embedded in the core (needed for collisions).
-- Mesh & Shape” section contains Transform parameters for Mesh and Shape
+- Mesh & Shape” - section contains Transform parameters for Mesh and Shape
 - Section “Slots” - cells for developer nodes if it is necessary to embed them into the core (communication only through code)
 - Core” section - responsible for the state of the core
 
