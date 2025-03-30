@@ -86,13 +86,13 @@
 ![Pasted image 20250222102256.png](../assets/images/pasted-images/Pasted%20image%2020250222102256.png)
 ![Pasted image 20250222102350.png](../assets/images/pasted-images/Pasted%20image%2020250222102350.png)
 /// caption
-<small>Position2D = Vector2D(0, 0); Position3D = Vecotr3D(0, 0, -0.5)</small>
+<small>Position2D = Vector2D(0, 0); Position3D = Vector3D(0, 0, -0.5)</small>
 ///
 
 ![Pasted image 20250222102459.png](../assets/images/pasted-images/Pasted%20image%2020250222102459.png)
 ![Pasted image 20250222102539.png](../assets/images/pasted-images/Pasted%20image%2020250222102539.png)
 /// caption
-<small>Position2D = Vector2D(-163, -157); Position3D = Vecotr3D(-10.1875, 0, -10.3125)</small>
+<small>Position2D = Vector2D(-163, -157); Position3D = Vector3D(-10.1875, 0, -10.3125)</small>
 ///
 
 #### Библиотека Меша
@@ -131,9 +131,9 @@
 	///caption
 	Чем ниже слой, тем темнее цвет
 	
-	Крсный - боковая часть блоков
+	Красный - боковая часть блоков
 	
-	Номер показивает z-индекс слоя
+	Номер показывает z-индекс слоя
 	///
 
 ---
@@ -161,7 +161,7 @@
 - Y 3D - позиция персонажа на оси Z
 - Mesh - ячейка для меш-ноды которая встраивается в ядро (после установки вы можете увидеть её в разделе 3D)
 - Shape - ячейка для шейп-ноды которая встраивается в ядро (нужна для столкновений)
-- Раздел "Mesh & Shape" содержит параметры Transform для Mesh и Shape
+- Раздел "Mesh & Shape" - содержит параметры Transform для Mesh и Shape
 - Раздел "Slots" - ячейки для нод разработчика если потребуется внедрить их в ядро (связь только через код)
 - Раздел "Core" - отвечает за состояние ядра
 

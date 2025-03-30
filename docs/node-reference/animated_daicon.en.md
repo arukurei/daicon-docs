@@ -76,11 +76,11 @@ Keeps a constant count of the number of child nodes of the kernel.
 Dictionaries of node parameters stored in the kernel via cells. Stores all parameters necessary for dynamic deployment of kernel child nodes.
 
 ---
-### *StaticBody-section*
+### *AnimatedBody-section*
 
 Parameter section for the kernel root node.
 
-`(See Godot documentation : StaticBody)`.
+`(See Godot documentation : AnimatedBody3D)`.
 
 ---
 ### *CollisionObject3D-section*

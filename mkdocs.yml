@@ -98,6 +98,9 @@ plugins:
         - locale: ru
           name: Русский
           build: true
+        - locale: ja
+          name: 日本語
+          build: true
   - mkdocs-izsam-video
   - git-authors
   - git-revision-date-localized:

@@ -80,7 +80,7 @@ Dictionaries of node parameters stored in the kernel via cells. Stores all param
 
 Parameter section for the kernel root node.
 
-`(See Godot documentation : StaticBody)`.
+`(See Godot documentation : StaticBody3D)`.
 
 ---
 ### *CollisionObject3D-section*

@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "fee0dbb4b5ed0990",
+        "id": "a3c5a786f93469ae",
         "type": "tabs",
         "children": [
           {
-            "id": "85b757898c84200c",
+            "id": "e22618685c6df61b",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "contributing.en.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "contributing.en"
+              "title": "Новая вкладка"
             }
           }
         ]
@@ -168,14 +164,37 @@
       "command-palette:Открыть палитру команд": false
     }
   },
-  "active": "85b757898c84200c",
+  "active": "e22618685c6df61b",
   "lastOpenFiles": [
+    "node-reference/kinematic_daicon.ja.md",
+    "node-reference/animated_daicon.ja.md",
+    "node-reference/static_daicon.ja.md",
+    "node-reference/kinematic_daicon.ru.md",
+    "node-reference/animated_daicon.en.md",
+    "node-reference/animated_daicon.ru.md",
+    "node-reference/static_daicon.en.md",
+    "node-reference/static_daicon.ru.md",
+    "node-reference/daicon_map.ja.md",
+    "node-reference/daicon_map_layer.ja.md",
+    "node-reference/daicon_map.ru.md",
+    "node-reference/daicon.ja.md",
+    "node-reference/daicon.ru.md",
+    "contributing.ru.md",
+    "contributing.ja.md",
+    "getting-started/creating_your_game.ja.md",
+    "getting-started/creating_your_game.ru.md",
+    "getting-started/setup.ja.md",
     "getting-started/setup.ru.md",
-    "README.md",
-    "getting-started/setup.en.md",
-    "contributing.en.md",
-    "getting-started/getting_started.en.md",
-    "getting-started/getting_started.ru.md",
-    "contributing.ru.md"
+    "getting-started/getting_started.ja.md",
+    "overrides/home.ja.html~",
+    "made-with-daicon/demo.ja.md",
+    "made-with-daicon/made_with_daicon.ja.md",
+    "manual/core.ja.md",
+    "manual/mesh.ja.md",
+    "index.ja.md~",
+    "overrides/home.ja.html",
+    "index.ja.md",
+    "manual/mesh.en.md",
+    "Pasted image 20250330114021.png"
   ]
 }
