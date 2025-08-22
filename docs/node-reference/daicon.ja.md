@@ -1,8 +1,8 @@
 # Daicon
 
-![daicon.png](../assets/images/daicon.png)
+![daicon.png](../assets/images/nodes/daicon.png)
 
-Daicon は、シェーダーを担当するシーンのルートノードです。
+**Daicon** は、シェーダーを担当するシーンのルートノードです。
 
 ---
 ## **パラメータ**:
@@ -25,7 +25,7 @@ Daicon は、シェーダーを担当するシーンのルートノードです�
 画面上のすべてのシェーダーの位置のリストを動的に更新する。
 
 ---
-## **Методы**:
+## **方法**:
 
 ### - *_physics_process*
 

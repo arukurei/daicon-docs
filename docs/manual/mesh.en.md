@@ -103,13 +103,15 @@ For this example, I'll start with blender itself, where we'll create the meshes.
 
 ---
 
-Now let's move on to the export. Choose any format you like, and for this example I will use **.blend** or **.glb** format:
+Now let's move on to exporting. Choose any format that suits you; for example, I am using the **.blend** format and **.glb** as a similar alternative.
 
-1. Right-click on the imported file and click on “New Inherited Scene” item
-2. Highlight all the **MeshInstance3D** blocks and at the top of the screen click on “Mesh” and create a collision shape.
-3. Now for each **MeshInstance3D** block, create a **StaticBody3D** and drop the collision mesh there.
+1. Add `-col` to the name of each mesh object.
 
-It's done! Now just export the mesh library by clicking on the “Scene” section, and under “Export As” select “Mesh Library”.
+![Pasted image 20250819190644.png](../assets/images/pasted-images/Pasted%20image%2020250819190644.png)
+
+2. Export the mesh in a format that is convenient for you
+3. Create a **new inherited scene** by right-clicking on the exported file in Godot
+4. In the open scene, go to the **“Scene”** section and export it as a **“Mesh Library”**
 
 !!!tip
 	The center of the blocks must match the center of the space in the editor
@@ -117,15 +119,14 @@ It's done! Now just export the mesh library by clicking on the “Scene” secti
 ---
 ### OBJ
 
-We will use the OBJ format for the objects, as it is the most suitable for our purposes.
+We will use the OBJ format for objects, as it is most suitable for our purposes.
 
 1. Create a mesh.
-2. Export it to **.obj** format.
-3. In the Godot editor add **MeshInstance3D** to the scene.
-4. By clamping the imported OBJ mesh, drop it into **MeshInstance3D**.
+2. Export it to the **.obj** format.
+3. In the Godot editor, add **MeshInstance3D** to the scene.
+4. Hold down the imported OBJ mesh and drag it into **MeshInstance3D**.
 
-After that, generate the mesh as shown in the last header and place the two objects in the core.
-
+After that, generate the grid as shown in the previous section and place these two objects in the core.
 
 !!!tip
-	The bottom of the blocks should coincide with the horizontal plane of the space in the editor. You can of course change the position of the mesh later on, but this is a matter of convenience and time saving
+	The center of the object must coincide with the center of the space in the editor. In Godot, the mesh will be attached to the center of the object, and you can raise the object itself to the desired height in the “Transform” section.

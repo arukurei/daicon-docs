@@ -1,13 +1,13 @@
 # DaiconMapLayer
 
-![daicon_map_layer.png](../assets/images/daicon_map_layer.png)
+![daicon_map_layer.png](../assets/images/nodes/daicon_map_layer.png)
 
 **TileMapLayer** は、**DaiconMap** のコアを埋め込んだ、単一のローカルな独立したノード**TileMapLayer** を表します。
 
 したがって、**DaiconMapLayer** はサポートノード、または特別な注意を必要とする環境の個々の要素を表すノードです。
 
 ---
-## **Параметры**:
+## **パラメーター**:
 
 ### - *grid_map*
 <p style="color:#ffb0e0;">Array[Node]</p>
@@ -44,17 +44,7 @@ DaiconMapコア。
 3D用のナビゲーショングリッドを焼く。
 
 ---
-### - *rotation_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-コアの回転構成。
-
----
-### - *scale_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-カーネルのスケールを設定する。
-
----
-## **Методы**:
+## **方法**:
 ### - *_ready*
 
 各起動時にカーネルをデプロイする。ノードの基本設定を行います。

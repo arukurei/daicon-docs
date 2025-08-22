@@ -1,6 +1,6 @@
 # DaiconMapLayer
 
-![daicon_map_layer.png](../assets/images/daicon_map_layer.png)
+![daicon_map_layer.png](../assets/images/nodes/daicon_map_layer.png)
 
 Представляет собой единую локальную независимую ноду **TileMapLayer** со встроенным ядром **DaiconMap**.
 
@@ -42,16 +42,6 @@
 ### - *bake_navigation*
 <p style="color:#ffb0e0;">bool</p>
 Запечь навигационную сетку для 3D.
-
----
-### - *rotation_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-Настройка поворота ядра.
-
----
-### - *scale_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-Настройка масштаба ядра.
 
 ---
 ## **Методы**:

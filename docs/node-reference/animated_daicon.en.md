@@ -1,29 +1,19 @@
 # AnimatedDaicon
 
-![animated_daicon.png](../assets/images/animated_daicon.png)
+![animated_daicon.png](../assets/images/nodes/animated_daicon.png)
 
-AnimatedDaicon - node representing a moving object, which is able to affect other bodies, when there is no effect on its own body.
+**AnimatedDaicon** - node representing a moving object, which is able to affect other bodies, when there is no effect on its own body.
 
 ---
 ## **Parameters**:
 
 ### - *d3*
-<p style="color:#ffb0e0;">CharacterBody3D</p>
+<p style="color:#ffb0e0;">AnimatableBody3D</p>
 AnimatedDaicon core.
 
 ---
-### - *right_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-It tracks collisions and works in conjunction with **y** and **z-sorting** to correctly render objects. It determines whether an object is behind a barrier or not.
-
----
-### - *left_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-It tracks collisions and works in conjunction with **y** and **z-sorting** to correctly render objects. It determines whether an object is behind a barrier or not.
-
----
-### - *center_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
+### - *whisker*
+<p style="color:#ffb0e0;">Area3D</p>
 It tracks collisions and works in conjunction with **y** and **z-sorting** to correctly render objects. It determines whether an object is behind a barrier or not.
 
 ---
@@ -34,12 +24,30 @@ It tracks collisions and works in conjunction with **y** and **z-sorting** to co
 ---
 ### - *tile_size*
 <p style="color:#ffb0e0;">int</p>
-The size of one tile (the value determines the number of pixels that the character passes equal to 1 meter).
+Tile Size determines how many pixels equal 1 meter in 3D.
+(basically it is the tile size per cell size in 3D)
 
 ---
 ### - *y_3d*
 <p style="color:#ffb0e0;">int</p>
 The character's position on the Z-axis.
+
+---
+### - *z_step*
+<p style="color:#ffb0e0;">int</p>
+Z-step in the sorting system between height levels.
+
+For example **z_step** = 10, then:
+
+Level -1 = -10
+Level 0 = 0
+Level 1 = 10
+Level 2 = 20
+
+---
+### - *z_sort_coef*
+<p style="color:#ffb0e0;">int</p>
+Object max 3D height in blocks (meters). Used in sortable system as coef.
 
 ---
 ### - *mesh*
@@ -57,7 +65,7 @@ Has its own dictionary in the Core section: **shape_properties**.
 ---
 ### *Mesh & Shape-section*
 
-The “Mesh & Shape” section contains **Transform** parameters for Mesh and Shape.
+The “Mesh & Shape” section contains parameters for Mesh and Shape.
 
 ---
 ### *Slots-section*
@@ -95,12 +103,12 @@ Parameter section for the root node of the kernel.
 ---
 ### *RayCast-section*
 
-Parameter section for **Whiskers** and **ShaderCast** nodes.
+Parameters section for **Whisker** and **ShaderCast** nodes.
 
-`(See Godot documentation : RayCast3D)`.
+`(See Godot documentation: Area3D - RayCast3D)`
 
 ---
-## **Методы**:
+## **Methods**:
 ## - *_ready*
 
 Deploys the kernel at each startup. Performs basic configuration of the node.
@@ -108,30 +116,35 @@ Deploys the kernel at each startup. Performs basic configuration of the node.
 ---
 ### - *_process*
 
-> Works only in the editor.
-
-Synchronizes movement of a node in 2D and its core in 3D. 
-
----
+Synchronizes the movement of a node in 2D and its core in 3D while in the editor.
+Also updates the z_index during gameplay.
 
 ---
 ### - *update_pos*
 
 ```python
-func update_pos(first_coef = 1.1, second_coef = 2.1):
-	self.position.x = d3.position.x * tile_size
-	self.position.y = d3.position.z * tile_size - d3.position.y * tile_size
-	if right_whisker.is_colliding() or left_whisker.is_colliding() or center_whisker.is_colliding():
-		self.z_index = d3.position.y + first_coef
-	else:
-		self.z_index = d3.position.y + second_coef
+func update_pos():
+	self.position.x = (d3.position.x - offset_3d.x) * tile_size
+	self.position.y = ((d3.position.z - offset_3d.z) - (d3.position.y - offset_3d.y)) * tile_size
 ```
 
 The function updates the position of the object in 2D space by passing it the 3D coordinates of the core.
 
-**first_coef** determines the coefficient to the z-index when the object is behind the fence.
+---
+### - *_update_z_index*
 
-**second_coef** determines the coefficient to the z-index when **Whiskers** do not encounter anything.
+```python
+func _update_z_index():
+	if whisker.get_overlapping_bodies():
+		if whisker.get_overlapping_bodies()[0].has_meta("z_index"):
+			self.z_index = whisker.get_overlapping_bodies()[0].get_meta("z_index") - 1
+		else:
+			self.z_index = (int(d3.position.y + (offset_3d.y * 1.1))) * z_step - 1
+	else:
+		self.z_index = ((d3.position.y - offset_3d.y) + z_sort_coef) * z_step + 2
+	
+	d3.set_meta("z_index", self.z_index)
+```
 
 ---
 ### - *get_node_properties*

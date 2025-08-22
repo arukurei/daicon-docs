@@ -15,7 +15,7 @@
 ---
 ## 1.最初のステップ
 
->![daicon.png](../assets/images/daicon.png)
+>![daicon.png](../assets/images/nodes/daicon.png)
 > 
 > まず最初に、シーンそのものを特徴付けるノードをシーンに追加します。これは基本的にNode、Node2DまたはNode3Dですが、プラグインはこのために **Daicon** を提供します。
 
@@ -24,7 +24,7 @@
 
 ### スクリプト・オーバーライド
 
-お気づきかもしれませんが、ノードにはすでにスクリプトが添付されています。これは、このタイプの**すべての**ノードを定義するスクリプト・ファイルです。 したがって、このスクリプトはすべて同じであり、編集することはできません。
+お気づきかもしれませんが、ノードにはすでにスクリプトが添付されています。これは、このタイプの**すべての**ノードを定義するスクリプト・ファイルです。 したがって、これらはすべて同じであり、ローカル機能のために編集することはできません。
 
 ![Pasted image 20250222173306.png](../assets/images/pasted-images/Pasted%20image%2020250222173306.png)
 
@@ -51,15 +51,15 @@
 
 ### - DaiconMap <small>(環境のメインノード)</small>
 > 
-> ![daicon-map.png](../assets/images/daicon-map.png)
+> ![daicon-map.png](../assets/images/nodes/daicon_map.png)
 > 
 > これは**TileMapLayers**のセットで、順番にあなたの環境のレベルになります。
 > 
-> このような各レイヤーは、空間におけるこのレイヤーの高さの尺度である一意の**z-インデックス**を含んでいる。言い換えれば、**z-ソート**は、そのインデックスに基づいて、モジュラー**Z**軸に沿ってオブジェクトを配置します。
+> このような各レイヤーは、空間におけるこのレイヤーの高さの尺度である一意の**z-インデックス**を含んでいる。言い換えれば、**z-ソート**は、そのインデックスに基づいて、モジュラー**Z**軸に沿ってオブジェクトを配置します (**Y** 軸（3D）)。
 
 ###  - DaiconMapLayer <small>(追加の環境ノード)</small>
 > 
-> ![daicon_map_layer.png](../assets/images/daicon_map_layer.png)
+> ![daicon_map_layer.png](../assets/images/nodes/daicon_map_layer.png)
 > 
 > コア **DaiconMap** が埋め込まれた単一のローカル独立ノード**TileMapLayer**を表す。
 > 
@@ -67,10 +67,12 @@
 
 ### 環境設定
 
-![Pasted image 20250222101034.png](../assets/images/pasted-images/Pasted%20image%2020250222101034.png)
+![Pasted image 20250819122909.png](../assets/images/pasted-images/Pasted%20image%2020250819122909.png)
 
 - Mesh Library - 3D 世界が構築されるメッシュのライブラリ
 - Physics Material - 個々のタイルの摩擦や弾性などの物理的特性を決定するために使用されます。
+- Z Step - zインデックスのステップ（高さレベル間）
+- Visible 3D - GridMapの3D表示
 - Cell Size - 各 3D タイルのサイズ (メートル単位)
 - Collision Layer そして Mask - 3D の衝突レイヤー
 - Bake Navigation - 3D 用のナビゲーション メッシュをベイクする
@@ -106,6 +108,11 @@
 
 ![Pasted image 20250222153734.png](../assets/images/pasted-images/Pasted%20image%2020250222153734.png)
 
+!!! warning
+	側面のタイル（例：赤いタイル）に対して、ローカルな z_index = -1 を設定してください。これにより、2つの壁がオブジェクトを密接に囲む場合に発生するソートエラーが解消されます。
+	
+	![Pasted image 20250821114142.png](../assets/images/pasted-images/Pasted%20image%2020250821114142.png)
+
 #### DaiconMap レイヤーの作成
 
 - TileMapのパラメータパネルに複数のレイヤーを作成する。  
@@ -134,13 +141,13 @@
 	
 	赤 - ブロックの側面
 	
-	数字はレイヤーの Z インデックスを示します
+	番号は層の高さレベルを示します。zインデックスを知るには、レベルにZステップを乗算するだけで済みます。
 	///
 
 ---
 ## 3.プレーヤー
 > 
-> ![kinematic_daicon.png](../assets/images/kinematic_daicon.png)
+> ![kinematic_daicon.png](../assets/images/nodes/kinematic_daicon.png)
 > 
 >KinematicDaiconノードは、すべてのキネマティックオブジェクトに使用されます。このノードには、動いて相互作用するオブジェクトを作成するために必要なものがすべて含まれています。
 
@@ -156,34 +163,42 @@
 
 ### プレーヤーの設定
 
-![Pasted image 20250304174251.png](../assets/images/pasted-images/Pasted%20image%2020250304174251.png)
+![Pasted image 20250819124635.png](../assets/images/pasted-images/Pasted%20image%2020250819124635.png)
 
-- Tile Size - 1タイルの大きさ（この値は、文字が1メートルに等しく通過するピクセル数を定義します。）
-- Y 3D - Z軸上の文字位置
+- Tile Size - タイルサイズとは、3D空間において1メートルに相当するピクセル数を決定するものです。（要するに、3D空間におけるセルサイズあたりのタイルサイズを指します）
+- Y 3D - Z軸上の文字位置 (**Y** 軸（3D）)
+- Z Step - zインデックスのステップ（高さレベル間）
 - Mesh - コアに埋め込まれたメッシュノードセル（インストール後、3Dセクションで見ることができる）
 - Shape - コアに埋め込まれたシェイプノードのセル（衝突に必要）
-- セクション "Mesh & Shape" - メッシュとシェイプのTransformパラメータを含む
+- セクション "Mesh & Shape" - メッシュとシェイプのパラメーターを含みます。
 - セクション "Slots" - カーネルに実装する必要がある場合、開発者ノード用のセル（コード経由の通信のみ）
 - セクション "Core" - は原子核の状態に責任がある。
 
-![Pasted image 20250304174555.png](../assets/images/pasted-images/Pasted%20image%2020250304174555.png)
+![Pasted image 20250819124843.png](../assets/images/pasted-images/Pasted%20image%2020250819124843.png)
 
 - Child Count - カーネル内の子ノードの数
 - 次に、各セルのノード・パラメータのディクショナリ（セルが埋まっていればディクショナリは満杯）。
 
 ### RayCast
 
-![Pasted image 20250222181615.png](../assets/images/pasted-images/Pasted%20image%2020250222181615.png)
+![Pasted image 20250819125046.png](../assets/images/pasted-images/Pasted%20image%2020250819125046.png)
 
-**RayCast** カテゴリは、コアに組み込まれた RayCast3Dノード用の4つの設定セクションを表します。
+**RayCast** カテゴリは、コアに組み込まれたノード用の2つの設定セクションから構成されています：ShaderCast と Whisker。
 
-**Whiskers** は衝突を監視し、オブジェクトを正しくレンダリングするために**y**および**z-ソート**と連動します。右、左、中央の3つがあります。これらはオブジェクトがバリアの後ろにあるかどうかを判断します。
+**Whisker** は衝突を監視し、**y** と **z-ソート** と連携してオブジェクトを正しくレンダリングします。これは Area3D ノードであり、オブジェクトが障害物の後ろにあるかどうかを判断します。
 
-**ShaderCast** は特別な目的のノードです。その目的は、プレイヤーの前にあるオブジェクトとの衝突を検出し、それに基づいてシェーダーを描画することです。
+!!!Info
+	Whisker が正しく動作するように、1.1 メートル前方にシフトされています（オブジェクトの形状が 1x1x1 の立方体でない場合は、この値を調整してください）。これは、コアと相互作用する他のオブジェクトとの不要な衝突を回避するためです。
+	
+	さらに、Whisker の Shape 形状は、想定される衝突領域よりもやや小さくなければなりません。これは、エンジン自体の計算誤差による誤った衝突を回避するためです（浮動小数点数の問題に関連しています）。
+	
+	例えば、想定される領域が1x1x1の立方体である場合、Shapeのサイズは0.9x0.9x0.9となります。
 
-![Pasted image 20250222183205.png](../assets/images/pasted-images/Pasted%20image%2020250222183205.png)
+**ShaderCast** - 特殊な目的のノードです。その目的は、プレイヤーの前方のオブジェクトとの衝突を検出し、その結果に基づいてシェーダーを描画することです。
+
+![Pasted image 20250819134809.png](../assets/images/pasted-images/Pasted%20image%2020250819134809.png)
 /// caption
-赤いマークは **Whiskers**
+**Whisker** ゾーン
 
 青い光線は **ShaderCast** です。
 ///

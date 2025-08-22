@@ -97,10 +97,10 @@ func _physics_process(delta: float) -> void:
 		player_animation(direction, d3.velocity)
 		update_pos()
 
-func player_animation(direction, velocity):
-	if velocity == Vector3.ZERO:
+func player_animation(direction, d3_velocity):
+	if d3_velocity == Vector3.ZERO:
 		animation.travel("Idle")
-	elif velocity != Vector3.ZERO:
+	elif d3_velocity != Vector3.ZERO:
 		if direction:
 			if d3.is_on_floor():
 				animation.travel("Move")
@@ -118,19 +118,41 @@ func set_animation_direction(direction):
 ```
 
 ---
-## 静的オブジェクト
+## StaticDaicon - AnimatedDaicon
 
-静的オブジェクトには、ノード **StaticDaicon** と **AnimatedDaicon** を使用します。これらの違いは、StaticBodyと AnimatedBody の違いに例えることができます。
-  
-両ノードの設定と機能の原理は KinematicDaicon と似ています。
+> ![static_daicon.png](../assets/images/nodes/static_daicon.png)
+>
+> ![animated_daicon.png](../assets/images/nodes/animated_daicon.png)
+>
+> 静的オブジェクトには、**StaticDaicon** と **AnimatedDaicon** ノードを使用してください。これらの違いは、StaticBody と AnimatedBody の違いと類似しています。
+>
+>両ノードの設定と動作の原理は、KinematicDaicon と同様です。
 
-![static_daicon.png](../assets/images/static_daicon.png)
+---
+## RigidDaicon
 
-![animated_daicon.png](../assets/images/animated_daicon.png)
 
-!!!tip
-	node-daiconをコピーしないようにしてください。これは予期せぬエラーを引き起こす可能性がある。
-	代わりに、手動でノードを作成してください。
+> ![rigid_daicon.png](../assets/images/nodes/rigid_daicon.png)
+>
+> 複雑な物理特性を持つオブジェクトには**RigidDaicon**が利用可能です。
+
+---
+## DaiconShadow
+
+> ![daicon_shadow.png](../assets/images/nodes/daicon_shadow.png)
+>
+> DaiconShadow ノードは、**CharacterBody3D** コアを内蔵した2次元スプライトです。親ダイコン ノードを入力として受け取り、そのコアのデータを使用してオブジェクトの下に影を生成します。
+
+![Pasted image 20250821081813.png](../assets/images/pasted-images/Pasted%20image%2020250821081813.png)
+
+- 入力ノードを**Daicon Parent**パラメーターに配置します（このノードが影を投影します）
+- **tile_size** と **z_step** のパラメーターは自動的に親と同期されます
+- **min_distance** と **max_distance** の値を設定します（詳細は「Node Reference : DaiconShadow」セクションを参照）
+- **Shadow Mode** を選択します - 影のモジュレーションモード （フェードと彩度）
+- **Stream Mode** を選択してください - 物理ボディのコアの動作モード（詳細は「Node Reference : DaiconShadow」セクションを参照）
+- **Shape** を追加（shape.size.y = 0 は必要な平面衝突モデルを作成します）
+
+次に、**Shape セクション** は影の衝突を動的に変更するために使用され、設定が完了すると必要ありません - 影は完成です。
 
 ---
 ## シェーダー

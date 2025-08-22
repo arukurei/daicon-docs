@@ -14,4 +14,8 @@ This repository contains the source of Daicon documentation in Markdown.
 
 - [Telegram](https://t.me/G_Quasar)
 
+- [YouTube](https://www.youtube.com/@arukurei)
+
+- [Discord](https://discord.gg/663eYk5ZGA)
+
 If you like Daicon and want to support its development, you can donate to the project via [PayPal](https://www.paypal.com/donate/?hosted_button_id=LF5SHGQDXK2PG) or [ItchIO](https://alkrei.itch.io/daicon). Your support is very much appreciated and helps keep the project going!

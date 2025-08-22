@@ -97,10 +97,10 @@ func _physics_process(delta: float) -> void:
 		player_animation(direction, d3.velocity)
 		update_pos()
 
-func player_animation(direction, velocity):
-	if velocity == Vector3.ZERO:
+func player_animation(direction, d3_velocity):
+	if d3_velocity == Vector3.ZERO:
 		animation.travel("Idle")
-	elif velocity != Vector3.ZERO:
+	elif d3_velocity != Vector3.ZERO:
 		if direction:
 			if d3.is_on_floor():
 				animation.travel("Move")
@@ -118,19 +118,42 @@ func set_animation_direction(direction):
 ```
 
 ---
-## Static objects
+## StaticDaicon - AnimatedDaicon
 
-For static objects use nodes **StaticDaicon** and **AnimatedDaicon**. Their differences can be compared to the differences between StaticBody and AnimatedBody.
+> ![static_daicon.png](../assets/images/nodes/static_daicon.png)
+>
+> ![animated_daicon.png](../assets/images/nodes/animated_daicon.png)
+>
+> For static objects, use the **StaticDaicon** and **AnimatedDaicon** nodes. Their differences can be compared to the differences between StaticBody and AnimatedBody.
+>
+>The principle of configuration and functioning of both nodes is similar to KinematicDaicon.
 
-The principle of setting and functioning of both nodes is similar to KinematicDaicon.
+---
+## RigidDaicon
 
-![static_daicon.png](../assets/images/static_daicon.png)
 
-![animated_daicon.png](../assets/images/animated_daicon.png)
+> ![rigid_daicon.png](../assets/images/nodes/rigid_daicon.png)
+>
+> For objects with complex physics, there is **RigidDaicon**.
 
-!!!tip
-	Try not to copy node-dycon. This can contribute to unexpected errors.
-	Instead, create nodes manually.
+---
+## DaiconShadow
+
+> ![daicon_shadow.png](../assets/images/nodes/daicon_shadow.png)
+>
+> The DaiconShadow node is a 2D sprite with a built-in **CharacterBody3D** core. It receives the parent daikon node as input and creates a shadow
+> under the object using its core data.
+
+![Pasted image 20250821081813.png](../assets/images/pasted-images/Pasted%20image%2020250821081813.png)
+
+- Place the input node in the **Daicon Parent** parameter (this node will cast the shadow)
+- The **tile_size** and **z_step** parameters are automatically synchronized with the parent
+- Set the **min_distance** and **max_distance** values (see the “Node Reference: DaiconShadow” section)
+- Select **Shadow Mode** - shadow modulation mode (Fade and saturation)
+- Select **Stream Mode** - the behavior mode of the physical body of the core (see section “Node Reference: DaiconShadow”)
+- Add **Shape** (shape.size.y = 0 - this will create the necessary flat collision model)
+
+Next, the **Shape section** is used to dynamically change the shadow collisions and is not required after the settings are complete - the shadow is ready.
 
 ---
 ## Shaders

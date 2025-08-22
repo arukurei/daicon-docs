@@ -60,11 +60,6 @@ if node_1_properties and ClassDB.class_exists(node_1_properties.Class):
 		node.set(prop, node_1_properties.Properties[prop])
 ```
 
-!!!Warning
-	Учитывайте тот факт, что при погружении ноды в ядро, её позиция, независимо от предыдущего положения, перемещается к центру ядра и опускается на 0.5:
-	
-	`node.position = Vector3(0, 0.5, 0)`
-
 ---
 ## Обращение через код
 

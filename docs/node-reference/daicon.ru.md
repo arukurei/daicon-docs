@@ -1,8 +1,8 @@
 # Daicon
 
-![daicon.png](../assets/images/daicon.png)
+![daicon.png](../assets/images/nodes/daicon.png)
 
-Daicon - корневая нода сцены, отвечающая за шейдеры.
+**Daicon** - корневая нода сцены, отвечающая за шейдеры.
 
 ---
 ## **Параметры**:

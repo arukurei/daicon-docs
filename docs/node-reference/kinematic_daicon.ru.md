@@ -1,8 +1,8 @@
 # KinematicDaicon
 
-![kinematic_daicon.png](../assets/images/kinematic_daicon.png)
+![kinematic_daicon.png](../assets/images/nodes/kinematic_daicon.png)
 
-KinematicDaicon - нода представляющая кинематический обьект. В ней собрано всё необходимое чтобы создать двигающийся и взаимодействующий обьект.
+**KinematicDaicon** - нода представляющая кинематический обьект. В ней собрано всё необходимое чтобы создать двигающийся и взаимодействующий обьект.
 
 ---
 ## **Параметры**:
@@ -12,18 +12,8 @@ KinematicDaicon - нода представляющая кинематическ
 Ядро KinematicDaicon.
 
 ---
-### - *right_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-Отслеживает столкновения и работает в комплексе с **y** и **z-сортировками** для правильной отрисовки обьектов. Он определяет находиться ли обьект за заграждением или нет.
-
----
-### - *left_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-Отслеживает столкновения и работает в комплексе с **y** и **z-сортировками** для правильной отрисовки обьектов. Он определяет находиться ли обьект за заграждением или нет.
-
----
-### - *center_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
+### - *whisker*
+<p style="color:#ffb0e0;">Area3D</p>
 Отслеживает столкновения и работает в комплексе с **y** и **z-сортировками** для правильной отрисовки обьектов. Он определяет находиться ли обьект за заграждением или нет.
 
 ---
@@ -34,12 +24,25 @@ KinematicDaicon - нода представляющая кинематическ
 ---
 ### - *tile_size*
 <p style="color:#ffb0e0;">int</p>
-Размер одной тайловой плитки (значение определяет количество пикселей которые проходит персонаж равные 1 метру).
+Размер плитки определяет, сколько пикселей соответствует 1 метру в 3D.
+(по сути, это размер плитки на размер ячейки в 3D)
 
 ---
 ### - *y_3d*
 <p style="color:#ffb0e0;">int</p>
 Позиция персонажа на оси Z.
+
+---
+### - *z_step*
+<p style="color:#ffb0e0;">int</p>
+Z-шаг в системе сортировки между уровнями высоты.
+
+Например **z_step** = 10, тогда:
+
+Уровень -1 = -10
+Уровень 0 = 0
+Уровень 1 = 10
+Уровень 2 = 20
 
 ---
 ### - *mesh*
@@ -57,7 +60,7 @@ KinematicDaicon - нода представляющая кинематическ
 ---
 ### *Mesh & Shape-раздел*
 
-Раздел "Mesh & Shape" содержит параметры **Transform** для Mesh и Shape.
+Раздел "Mesh & Shape" содержит параметры для Mesh и Shape.
 
 ---
 ### *Slots-раздел*
@@ -95,9 +98,9 @@ KinematicDaicon - нода представляющая кинематическ
 ---
 ### *RayCast-раздел*
 
-Раздел параметров для нод **Whiskers** и **ShaderCast**. 
+Раздел параметров для нод **Whisker** и **ShaderCast**. 
 
-`(Смотрите документацию Godot : RayCast3D)`
+`(Смотрите документацию Godot : Area3D - RayCast3D)`
 
 ---
 ## **Методы**:
@@ -116,20 +119,24 @@ KinematicDaicon - нода представляющая кинематическ
 ### - *update_pos*
 
 ```python
-func update_pos(first_coef = 1.1, second_coef = 2.1):
-	self.position.x = d3.position.x * tile_size
-	self.position.y = d3.position.z * tile_size - d3.position.y * tile_size
-	if right_whisker.is_colliding() or left_whisker.is_colliding() or center_whisker.is_colliding():
-		self.z_index = d3.position.y + first_coef
+func update_pos(coef = 1):
+	self.position.x = (d3.position.x - offset_3d.x) * tile_size
+	self.position.y = ((d3.position.z - offset_3d.z) - (d3.position.y - offset_3d.y)) * tile_size
+	
+	if whisker.get_overlapping_bodies():
+		if whisker.get_overlapping_bodies()[0].has_meta("z_index"):
+			self.z_index = whisker.get_overlapping_bodies()[0].get_meta("z_index") - 1
+		else:
+			self.z_index = (int(d3.position.y + (offset_3d.y * 1.1))) * z_step - 1
 	else:
-		self.z_index = d3.position.y + second_coef
+		self.z_index = ((d3.position.y - offset_3d.y) + coef) * z_step + 2
+	
+	d3.set_meta("z_index", self.z_index)
 ```
 
 Функция обновляет позицию обьекта в 2D пространстве передавая ей трехмерные координаты ядра.
 
-**first_coef** определяет коэффициент к z-индексу когда обьект находиться  за заграждением.
-
-**second_coef** определяет коэффициент к z-индексу когда **Whiskers** ни с чем не сталкиваются.
+coef определяет высоту обьекта.
 
 ---
 ### - *get_node_properties*
@@ -148,11 +155,6 @@ func get_node_properties(node: Node) -> Dictionary:
 ```
 
 Функция записывает все параметры ноды, её имя, а также класс в словарь и возвращает его.
-
----
-### - *_validate_property*
-
-Функция для корректировки работы панели параметров.
 
 ---
 ### - *_expand*

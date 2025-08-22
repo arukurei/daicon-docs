@@ -123,6 +123,8 @@ nav:
       - KinematicDaicon: node-reference/kinematic_daicon.md
       - StaticDaicon: node-reference/static_daicon.md
       - AnimatedDaicon: node-reference/animated_daicon.md
+      - RigidDaicon: node-reference/rigid_daicon.md
+      - DaiconShadow: node-reference/daicon_shadow.md
   - Contributing: contributing.md
   - Made with Daicon:
       - Demo: made-with-daicon/demo.md

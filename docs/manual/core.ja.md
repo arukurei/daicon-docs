@@ -60,11 +60,6 @@ if node_1_properties and ClassDB.class_exists(node_1_properties.Class):
 		node.set(prop, node_1_properties.Properties[prop])
 ```
 
-!!!Warning
-	ノードがコアに潜り込むと、その位置は以前の位置に関係なくコアの中心に移動し、0.5だけ下がるという事実を考慮に入れてください：
-	
-	`node.position = Vector3(0, 0.5, 0)`
-
 ---
 ## コードによるアドレス指定
 

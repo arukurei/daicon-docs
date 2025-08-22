@@ -14,7 +14,7 @@ The stuffing is called the core. It is packaged and it is not possible to intera
 ---
 ## 1.First steps
 
->![daicon.png](../assets/images/daicon.png)
+>![daicon.png](../assets/images/nodes/daicon.png)
 > 
 > First of all, add a node to your scene that will characterize the scene itself. This is basically a Node, Node2D or Node3D, but the plugin provides a **Daicon** for this.
 
@@ -23,7 +23,7 @@ The stuffing is called the core. It is packaged and it is not possible to intera
 
 ### Script override
 
-As you may have noticed, there is a script already attached to the node. This is a script file that defines **ALL** nodes of this type.  Thus, it is the same for all of them and can never be edited.
+As you may have noticed, there is a script already attached to the node. This is a script file that defines **ALL** nodes of this type.  Thus, it is the same for all of them and can never be edited for local functionality.
 
 ![Pasted image 20250222173306.png](../assets/images/pasted-images/Pasted%20image%2020250222173306.png)
 
@@ -50,15 +50,15 @@ To create an environment, the plugin offers 2 nodes with similar working princip
 
 ### - DaiconMap <small>(main environment node)</small>
 > 
-> ![daicon-map.png](../assets/images/daicon-map.png)
+> ![daicon-map.png](../assets/images/nodes/daicon_map.png)
 > 
 > Represents a set of **TileMapLayers**, which in turn are levels of your environment.
 > 
-> Each such layer contains a unique **z-index**, which is a measure of the height of this layer in space. In other words, **z-sorting** places objects along the modulo **Z** axis based on their index.
+> Each such layer contains a unique **z-index**, which is a measure of the height of this layer in space. In other words, **z-sorting** places objects along the modulo **Z** axis based on their index (**Y** axis in 3D).
 
 ###  - DaiconMapLayer <small>(additional environment node)</small>
 > 
-> ![daicon_map_layer.png](../assets/images/daicon_map_layer.png)
+> ![daicon_map_layer.png](../assets/images/nodes/daicon_map_layer.png)
 > 
 > Represents a single local independent node **TileMapLayer** with an embedded core **DaiconMap**.
 > 
@@ -66,10 +66,12 @@ To create an environment, the plugin offers 2 nodes with similar working princip
 
 ### Setting up the Environment
 
-![Pasted image 20250222101034.png](../assets/images/pasted-images/Pasted%20image%2020250222101034.png)
+![Pasted image 20250819122909.png](../assets/images/pasted-images/Pasted%20image%2020250819122909.png)
 
 - Mesh Library - a library of meshes from which the 3D world will be constructed
 - Physics Material - used to define physical properties, such as friction and elasticity, of individual tiles.
+- Z Step - z-index step between height levels
+- Visible 3D - visibility of GridMap in 3D
 - Cell Size - size in meters for each 3D tile
 - Collision Layer and Mask - collision layers for 3D
 - Bake Navigation - bake a navigation grid for 3D
@@ -104,6 +106,11 @@ Once the field is filled in, your tiles will have the **Item** parameter. It bin
 
 ![Pasted image 20250222153734.png](../assets/images/pasted-images/Pasted%20image%2020250222153734.png)
 
+!!! warning
+	For the side wall tiles (red tiles in the example), set the local z_index = -1. This will eliminate the sorting error when two walls are close to the object.
+	
+	![Pasted image 20250821114142.png](../assets/images/pasted-images/Pasted%20image%2020250821114142.png)
+
 #### Creating DaiconMap layers
 
 - Create several layers in the parameter panel for TileMap
@@ -132,13 +139,13 @@ If it wasn't, the perspective would be a perfect view from the top (Top)
 	
 	Red - side of blocks
 	
-	The number shows the z-index of the layer
+	The number indicates the height level of the layer. To find out the z-index, simply multiply the level by the Z Step.
 	///
 
 ---
 ## 3.Player
 > 
-> ![kinematic_daicon.png](../assets/images/kinematic_daicon.png)
+> ![kinematic_daicon.png](../assets/images/nodes/kinematic_daicon.png)
 > 
 > The KinematicDaicon node is used for all kinematic objects. It contains everything necessary to create a moving and interacting object.
 
@@ -154,33 +161,41 @@ Create a player:
 
 ### Player Setup
 
-![Pasted image 20250304174251.png](../assets/images/pasted-images/Pasted%20image%2020250304174251.png)
+![Pasted image 20250819124635.png](../assets/images/pasted-images/Pasted%20image%2020250819124635.png)
 
-- Tile Size - size of one tile (the value determines the number of pixels that the character passes equal to 1 meter)
-- Y 3D - position of the character on the Z axis
+- Tile Size - determines how many pixels equal 1 meter in 3D. (basically it is the tile size per cell size in 3D)
+- Y 3D - position of the character on the Z axis (**Y** axis in 3D)
+- Z Step - z-index step between height levels
 - Mesh - cell for mash-node that is embedded in the core (after installation you can see it in the 3D section).
 - Shape - a mesh for shape-node which is embedded in the core (needed for collisions).
-- Mesh & Shape” - section contains Transform parameters for Mesh and Shape
+- Mesh & Shape” - section contains parameters for Mesh and Shape
 - Section “Slots” - cells for developer nodes if it is necessary to embed them into the core (communication only through code)
 - Core” section - responsible for the state of the core
 
-![Pasted image 20250304174555.png](../assets/images/pasted-images/Pasted%20image%2020250304174555.png)
+![Pasted image 20250819124843.png](../assets/images/pasted-images/Pasted%20image%2020250819124843.png)
 
 - Child Count - number of child nodes in the core
 - Then dictionaries of node parameters for each cell (the dictionary is full if the cell is filled)
 ### RayCast
 
-![Pasted image 20250222181615.png](../assets/images/pasted-images/Pasted%20image%2020250222181615.png)
+![Pasted image 20250819125046.png](../assets/images/pasted-images/Pasted%20image%2020250819125046.png)
 
-The **RayCast** category represents 4 customization sections for the RayCast3D nodes built into the core.
+The **RayCast** category consists of two configuration sections for nodes built into the core: ShaderCast and Whisker.
 
-**Whiskers** monitor collisions and work in conjunction with **y** and **z-sorting** to render objects correctly. There are 3 of them: right, left and center. They determine whether the object is behind the fence or not.
+**Whisker** monitors collisions and works in conjunction with **y** and **z-sorting** to render objects correctly. It is an Area3D node and determines whether an object is behind a barrier or not.
 
-**ShaderCast** is a special purpose node. Its purpose is to detect collisions with objects in front of the player and draw a shader based on that.
+!!!Info
+	For Whisker to work correctly, it is shifted 1.1 meters forward (adjust this value if your object is not a 1x1x1 cube). This is necessary to avoid unnecessary potential collisions with other objects that interact with the core.
+	
+	In addition, the Shape for Whisker should be slightly smaller than the expected collision zone. This is required to avoid false collisions due to incorrect calculations by the engine itself (related to the problem of float numbers).
+	
+	For example, if the estimated collision zone is a 1x1x1 cube, then the Shape size is 0.9x0.9x0.9.
 
-![Pasted image 20250222183205.png](../assets/images/pasted-images/Pasted%20image%2020250222183205.png)
+**ShaderCast** is a special-purpose node. Its purpose is to detect collisions with objects in front of the player and draw a shader based on this.
+
+![Pasted image 20250819134809.png](../assets/images/pasted-images/Pasted%20image%2020250819134809.png)
 /// caption
-Red is **Whiskers**.
+**Whisker** zone
 
 Blue ray is **ShaderCast**
 ///

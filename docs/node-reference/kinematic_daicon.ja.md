@@ -1,30 +1,20 @@
 # KinematicDaicon
 
-![kinematic_daicon.png](../assets/images/kinematic_daicon.png)
+![kinematic_daicon.png](../assets/images/nodes/kinematic_daicon.png)
 
-KinematicDaicon はキネマティックオブジェクトを表すノードです。動いて相互作用するオブジェクトを作成するのに必要なものがすべて含まれています。
+**KinematicDaicon** はキネマティックオブジェクトを表すノードです。動いて相互作用するオブジェクトを作成するのに必要なものがすべて含まれています。
 
 ---
-## **Параметры**:
+## **パラメーター**:
 
 ### - *d3*
 <p style="color:#ffb0e0;">CharacterBody3D</p>
 KinematicDaicon のコア。
 
 ---
-### - *right_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
+### - *whisker*
+<p style="color:#ffb0e0;">Area3D</p>
 これは衝突を追跡し、オブジェクトを正しくレンダリングするために **y** および **z-sorting** 連動します。オブジェクトがバリアの後ろにあるかどうかを判定します。
-
----
-### - *left_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-衝突を追跡し、オブジェクトを正しくレンダリングするために **y** および **z-sorting** と連動します。オブジェクトがバリアの後ろにあるかどうかを判定します。
-
----
-### - *center_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-衝突を追跡し、オブジェクトを正しくレンダリングするために **y** および **z-sorting** と連動します。オブジェクトがバリアの後ろにあるかどうかを判定します。
 
 ---
 ### - *shader_cast*
@@ -34,12 +24,25 @@ KinematicDaicon のコア。
 ---
 ### - *tile_size*
 <p style="color:#ffb0e0;">int</p>
-1タイルの大きさ（この値は、文字が1メートルに等しく通過するピクセル数を定義する）。
+タイルサイズとは、3D空間において1メートルに相当するピクセル数を決定するものです。
+（要するに、3D空間におけるセルサイズあたりのタイルサイズを指します）
 
 ---
 ### - *y_3d*
 <p style="color:#ffb0e0;">int</p>
 キャラクターのZ軸上の位置。
+
+---
+### - *z_step*
+<p style="color:#ffb0e0;">int</p>
+Zステップは、高さレベル間のソートシステムにおけるステップです。
+
+例えば、**z_step** = 10の場合、次のように設定されます：
+
+レベル -1 = -10
+レベル 0 = 0
+レベル 1 = 10
+レベル 2 = 20
 
 ---
 ### - *mesh*
@@ -57,7 +60,7 @@ KinematicDaicon のコア。
 ---
 ### *Mesh & Shape-セクション*
 
-Mesh & Shape "セクションには、MeshとShapeの**Transform**パラメータが含まれています。
+「Mesh & Shape」セクションには、MeshとShapeのパラメーターが含まれています。
 
 ---
 ### *Slots-セクション*
@@ -95,9 +98,9 @@ Mesh & Shape "セクションには、MeshとShapeの**Transform**パラメー�
 ---
 ### *RayCast-セクション*
 
-**Whiskers** と **ShaderCast** ノードのパラメータセクション。
+**Whisker** および **ShaderCast** ノードのパラメーターセクション。
 
-`(ドキュメントを見る Godot : RayCast3D)`
+`(Godot のドキュメントを参照：Area3D - RayCast3D)`
 
 ---
 ## **方法**:
@@ -116,20 +119,24 @@ Mesh & Shape "セクションには、MeshとShapeの**Transform**パラメー�
 ### - *update_pos*
 
 ```python
-func update_pos(first_coef = 1.1, second_coef = 2.1):
-	self.position.x = d3.position.x * tile_size
-	self.position.y = d3.position.z * tile_size - d3.position.y * tile_size
-	if right_whisker.is_colliding() or left_whisker.is_colliding() or center_whisker.is_colliding():
-		self.z_index = d3.position.y + first_coef
+func update_pos(coef = 1):
+	self.position.x = (d3.position.x - offset_3d.x) * tile_size
+	self.position.y = ((d3.position.z - offset_3d.z) - (d3.position.y - offset_3d.y)) * tile_size
+	
+	if whisker.get_overlapping_bodies():
+		if whisker.get_overlapping_bodies()[0].has_meta("z_index"):
+			self.z_index = whisker.get_overlapping_bodies()[0].get_meta("z_index") - 1
+		else:
+			self.z_index = (int(d3.position.y + (offset_3d.y * 1.1))) * z_step - 1
 	else:
-		self.z_index = d3.position.y + second_coef
+		self.z_index = ((d3.position.y - offset_3d.y) + coef) * z_step + 2
+	
+	d3.set_meta("z_index", self.z_index)
 ```
 
 この関数は，コアの3次元座標を渡して，2次元空間におけるオブジェクトの位置を更新する．
 
-**first_coef** は、オブジェクトがフェンスの後ろにある場合の z-index に対する係数を決定します。
-
-**second_coef** は、**Whiskers** が何も遭遇していないときの z-index に対する係数を決定します。
+coef はオブジェクトの高さを決定します。
 
 ---
 ### - *get_node_properties*
@@ -148,11 +155,6 @@ func get_node_properties(node: Node) -> Dictionary:
 ```
 
 この関数は、すべてのノードのパラメータ、名前、クラスを辞書に書き込み、それを返します。
-
----
-### - *_validate_property*
-
-パラメータバーの動作を修正する機能。
 
 ---
 ### - *_expand*

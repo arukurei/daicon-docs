@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9bf528ad-4f0f-49c7-b8b5-c8a88518a2d9" name="Changes" comment="Version 2.0 &quot;Japan&quot;">
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.obsidian/core-plugins.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.obsidian/core-plugins.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.obsidian/workspace.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/animated_daicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/daicon-map.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/daicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/daicon_map_layer.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/kinematic_daicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250222101034.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250222181615.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250222183205.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250302203525.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250302203525.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250304174251.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250304174555.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/static_daicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/made-with-daicon/demo.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/made-with-daicon/demo.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/made-with-daicon/demo.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/made-with-daicon/demo.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/made-with-daicon/demo.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/made-with-daicon/demo.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/core.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/core.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/core.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/overrides/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/overrides/main.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mkdocs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mkdocs.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;arukurei&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/arukurei/daicon-docs.git&quot;,
+    &quot;accountId&quot;: &quot;e09187c1-f778-4421-85d4-95eb17c0d04c&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
+  <component name="ProjectId" id="2trdwOfDW99zl3NlJqM9bULxjll" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/arukurei/Рабочий стол/Проекты/Проекты Python/daicon-docs/docs/getting-started&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/getting-started" />
+      <recent name="$PROJECT_DIR$/docs/overrides" />
+      <recent name="$PROJECT_DIR$/docs" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>$USER_HOME$/.subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9bf528ad-4f0f-49c7-b8b5-c8a88518a2d9" name="Changes" comment="" />
+      <created>1741114365371</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1741114365371</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Added README.md">
+      <option name="closed" value="true" />
+      <created>1741193083407</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1741193083407</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added README.md social links">
+      <option name="closed" value="true" />
+      <created>1741199102545</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1741199102545</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Version 1.0">
+      <option name="closed" value="true" />
+      <created>1741277271138</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1741277271138</updated>
+    </task>
+    <task id="LOCAL-00004" summary="i18n fix">
+      <option name="closed" value="true" />
+      <created>1741278336893</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1741278336893</updated>
+    </task>
+    <task id="LOCAL-00005" summary="i18n fix">
+      <option name="closed" value="true" />
+      <created>1741278919738</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1741278919738</updated>
+    </task>
+    <task id="LOCAL-00006" summary="i18n fix">
+      <option name="closed" value="true" />
+      <created>1741279144464</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1741279144464</updated>
+    </task>
+    <task id="LOCAL-00007" summary="i18n fix">
+      <option name="closed" value="true" />
+      <created>1741280080283</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1741280080284</updated>
+    </task>
+    <task id="LOCAL-00008" summary="i18n fix">
+      <option name="closed" value="true" />
+      <created>1741280745998</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1741280745998</updated>
+    </task>
+    <task id="LOCAL-00009" summary="i18n fix">
+      <option name="closed" value="true" />
+      <created>1741280808747</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1741280808747</updated>
+    </task>
+    <task id="LOCAL-00010" summary="css fix">
+      <option name="closed" value="true" />
+      <created>1741283416145</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1741283416145</updated>
+    </task>
+    <task id="LOCAL-00011" summary="css image fix">
+      <option name="closed" value="true" />
+      <created>1741283788334</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1741283788334</updated>
+    </task>
+    <task id="LOCAL-00012" summary="css image fix">
+      <option name="closed" value="true" />
+      <created>1741284017556</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1741284017556</updated>
+    </task>
+    <task id="LOCAL-00013" summary="css image fix">
+      <option name="closed" value="true" />
+      <created>1741284262875</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1741284262875</updated>
+    </task>
+    <task id="LOCAL-00014" summary="css image fix">
+      <option name="closed" value="true" />
+      <created>1741284357726</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1741284357726</updated>
+    </task>
+    <task id="LOCAL-00015" summary="css image fix">
+      <option name="closed" value="true" />
+      <created>1741284633447</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1741284633447</updated>
+    </task>
+    <task id="LOCAL-00016" summary="css image fix">
+      <option name="closed" value="true" />
+      <created>1741284894205</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1741284894205</updated>
+    </task>
+    <task id="LOCAL-00017" summary="css image fix">
+      <option name="closed" value="true" />
+      <created>1741285635883</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1741285635883</updated>
+    </task>
+    <task id="LOCAL-00018" summary="lang test">
+      <option name="closed" value="true" />
+      <created>1741285825898</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1741285825898</updated>
+    </task>
+    <task id="LOCAL-00019" summary="lang fix">
+      <option name="closed" value="true" />
+      <created>1741285973667</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1741285973667</updated>
+    </task>
+    <task id="LOCAL-00020" summary="url fix">
+      <option name="closed" value="true" />
+      <created>1741287750737</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1741287750737</updated>
+    </task>
+    <task id="LOCAL-00021" summary="url fix">
+      <option name="closed" value="true" />
+      <created>1741288354438</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1741288354438</updated>
+    </task>
+    <task id="LOCAL-00022" summary="url fix">
+      <option name="closed" value="true" />
+      <created>1741288651444</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1741288651444</updated>
+    </task>
+    <task id="LOCAL-00023" summary="font test">
+      <option name="closed" value="true" />
+      <created>1741289055879</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1741289055879</updated>
+    </task>
+    <task id="LOCAL-00024" summary="font fix">
+      <option name="closed" value="true" />
+      <created>1741289282746</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1741289282746</updated>
+    </task>
+    <task id="LOCAL-00025" summary="update font">
+      <option name="closed" value="true" />
+      <created>1741290429698</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1741290429698</updated>
+    </task>
+    <task id="LOCAL-00026" summary="font fix">
+      <option name="closed" value="true" />
+      <created>1741293861643</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1741293861643</updated>
+    </task>
+    <task id="LOCAL-00027" summary="font fix">
+      <option name="closed" value="true" />
+      <created>1741294168764</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1741294168764</updated>
+    </task>
+    <task id="LOCAL-00028" summary="font fix">
+      <option name="closed" value="true" />
+      <created>1741294500692</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1741294500692</updated>
+    </task>
+    <task id="LOCAL-00029" summary="font fix">
+      <option name="closed" value="true" />
+      <created>1741294727804</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1741294727804</updated>
+    </task>
+    <task id="LOCAL-00030" summary="font fix">
+      <option name="closed" value="true" />
+      <created>1741294931000</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1741294931000</updated>
+    </task>
+    <task id="LOCAL-00031" summary="font fix">
+      <option name="closed" value="true" />
+      <created>1741295086868</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1741295086868</updated>
+    </task>
+    <task id="LOCAL-00032" summary="font test">
+      <option name="closed" value="true" />
+      <created>1741295667186</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1741295667186</updated>
+    </task>
+    <task id="LOCAL-00033" summary="font test">
+      <option name="closed" value="true" />
+      <created>1741296000784</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1741296000784</updated>
+    </task>
+    <task id="LOCAL-00034" summary="font test">
+      <option name="closed" value="true" />
+      <created>1741296496602</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1741296496602</updated>
+    </task>
+    <task id="LOCAL-00035" summary="font fix">
+      <option name="closed" value="true" />
+      <created>1741296683940</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1741296683940</updated>
+    </task>
+    <task id="LOCAL-00036" summary="ItchIO links">
+      <option name="closed" value="true" />
+      <created>1741352396036</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1741352396036</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Version 2.0 &quot;Japan&quot;">
+      <option name="closed" value="true" />
+      <created>1743343759769</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1743343759769</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added README.md" />
+    <MESSAGE value="Added README.md social links" />
+    <MESSAGE value="Version 1.0" />
+    <MESSAGE value="i18n fix" />
+    <MESSAGE value="css fix" />
+    <MESSAGE value="css image fix" />
+    <MESSAGE value="lang test" />
+    <MESSAGE value="lang fix" />
+    <MESSAGE value="url fix" />
+    <MESSAGE value="update font" />
+    <MESSAGE value="font" />
+    <MESSAGE value="font test" />
+    <MESSAGE value="font fix" />
+    <MESSAGE value="ItchIO links" />
+    <MESSAGE value="Version 2.0 &quot;Japan&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 2.0 &quot;Japan&quot;" />
+  </component>
+</project>

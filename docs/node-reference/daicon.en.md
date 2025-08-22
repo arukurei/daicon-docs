@@ -1,11 +1,11 @@
 # Daicon
 
-![daicon.png](../assets/images/daicon.png)
+![daicon.png](../assets/images/nodes/daicon.png)
 
-Daicon is the root node of the scene responsible for shaders.
+**Daicon** is the root node of the scene responsible for shaders.
 
 ---
-## **Параметры**:
+## **Parameters**:
 
 ### - *shader_trigger_nodes*
 <p style="color:#ffb0e0;">Array[Node]</p>
@@ -25,7 +25,7 @@ List of target nodes. Draws the shader using the passed position information fro
 Dynamically updated list of positions of all shaders on the screen.
 
 ---
-## **Методы**:
+## **Methods**:
 
 ### - *_physics_process*
 

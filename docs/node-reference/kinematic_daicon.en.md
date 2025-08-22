@@ -1,29 +1,19 @@
 # KinematicDaicon
 
-![kinematic_daicon.png](../assets/images/kinematic_daicon.png)
+![kinematic_daicon.png](../assets/images/nodes/kinematic_daicon.png)
 
-KinematicDaicon is a node representing a kinematic object. It contains everything necessary to create a moving and interacting object.
+**KinematicDaicon** is a node representing a kinematic object. It contains everything necessary to create a moving and interacting object.
 
 ---
-## **Параметры**:
+## **Parameters**:
 
 ### - *d3*
 <p style="color:#ffb0e0;">CharacterBody3D</p>
 KinematicDaicon core.
 
 ---
-### - *right_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-It tracks collisions and works in conjunction with **y** and **z-sorting** to correctly render objects. It determines whether an object is behind a barrier or not.
-
----
-### - *left_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-It tracks collisions and works in conjunction with **y** and **z-sorting** to correctly render objects. It determines whether an object is behind a barrier or not.
-
----
-### - *center_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
+### - *whisker*
+<p style="color:#ffb0e0;">Area3D</p>
 It tracks collisions and works in conjunction with **y** and **z-sorting** to correctly render objects. It determines whether an object is behind a barrier or not.
 
 ---
@@ -34,12 +24,25 @@ It tracks collisions and works in conjunction with **y** and **z-sorting** to co
 ---
 ### - *tile_size*
 <p style="color:#ffb0e0;">int</p>
-The size of one tile (the value determines the number of pixels that the character passes equal to 1 meter).
+Tile Size determines how many pixels equal 1 meter in 3D.
+(basically it is the tile size per cell size in 3D)
 
 ---
 ### - *y_3d*
 <p style="color:#ffb0e0;">int</p>
-Позиция персонажа на оси Z.
+The character's position on the Z-axis.
+
+---
+### - *z_step*
+<p style="color:#ffb0e0;">int</p>
+Z-step in the sorting system between height levels.
+
+For example **z_step** = 10, then:
+
+Level -1 = -10
+Level 0 = 0
+Level 1 = 10
+Level 2 = 20
 
 ---
 ### - *mesh*
@@ -57,7 +60,7 @@ Has its own dictionary in the Core section: **shape_properties**.
 ---
 ### *Mesh & Shape-section*
 
-The “Mesh & Shape” section contains the **Transform** parameters for Mesh and Shape.
+The “Mesh & Shape” section contains the parameters for Mesh and Shape.
 
 ---
 ### *Slots-section*
@@ -95,12 +98,12 @@ Parameter section for the root node of the kernel.
 ---
 ### *RayCast-section*
 
-Parameter section for **Whiskers** and **ShaderCast** nodes. 
+Parameters section for **Whisker** and **ShaderCast** nodes.
 
-`(See Godot documentation : RayCast3D)`.
+`(See Godot documentation: Area3D - RayCast3D)`
 
 ---
-## **Методы**:
+## **Methods**:
 ## - *_ready*
 
 Deploys the kernel at each startup. Performs basic configuration of the node.
@@ -116,20 +119,24 @@ Synchronizes movement of a node in 2D and its core in 3D.
 ### - *update_pos*
 
 ```python
-func update_pos(first_coef = 1.1, second_coef = 2.1):
-	self.position.x = d3.position.x * tile_size
-	self.position.y = d3.position.z * tile_size - d3.position.y * tile_size
-	if right_whisker.is_colliding() or left_whisker.is_colliding() or center_whisker.is_colliding():
-		self.z_index = d3.position.y + first_coef
+func update_pos(coef = 1):
+	self.position.x = (d3.position.x - offset_3d.x) * tile_size
+	self.position.y = ((d3.position.z - offset_3d.z) - (d3.position.y - offset_3d.y)) * tile_size
+	
+	if whisker.get_overlapping_bodies():
+		if whisker.get_overlapping_bodies()[0].has_meta("z_index"):
+			self.z_index = whisker.get_overlapping_bodies()[0].get_meta("z_index") - 1
+		else:
+			self.z_index = (int(d3.position.y + (offset_3d.y * 1.1))) * z_step - 1
 	else:
-		self.z_index = d3.position.y + second_coef
+		self.z_index = ((d3.position.y - offset_3d.y) + coef) * z_step + 2
+	
+	d3.set_meta("z_index", self.z_index)
 ```
 
 The function updates the position of the object in 2D space by passing it the 3D coordinates of the core.
 
-**first_coef** determines the coefficient to the z-index when the object is behind the fence.
-
-**second_coef** determines the coefficient to the z-index when **Whiskers** do not encounter anything.
+coef determines the height of the object.
 
 ---
 ### - *get_node_properties*
@@ -148,11 +155,6 @@ func get_node_properties(node: Node) -> Dictionary:
 ```
 
 The function writes all node parameters, its name, and class into a dictionary and returns it.
-
----
-### - *_validate_property*
-
-Function for correcting the operation of the parameter panel.
 
 ---
 ### - *_expand*

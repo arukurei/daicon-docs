@@ -1,13 +1,13 @@
 # DaiconMapLayer
 
-![daicon_map_layer.png](../assets/images/daicon_map_layer.png)
+![daicon_map_layer.png](../assets/images/nodes/daicon_map_layer.png)
 
 Represents a single local independent node **TileMapLayer** with an embedded core **DaiconMap**.
 
 A **DaiconMapLayer** is thus a support node or a node representing an individual element of your environment that requires special attention.
 
 ---
-## **Параметры**:
+## **Parameters**:
 
 ### - *grid_map*
 <p style="color:#ffb0e0;">Array[Node]</p>
@@ -44,17 +44,7 @@ Collision layers for **grid_map**.
 Bake a navigation grid for 3D.
 
 ---
-### - *rotation_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-Core Rotation Customization.
-
----
-### - *scale_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-Customizing the scale of the core.
-
----
-## **Методы**:
+## **Methods**:
 ### - *_ready*
 
 Deploys the kernel at each startup. Performs basic configuration of the node.

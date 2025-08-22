@@ -2,6 +2,10 @@
 
 После краткого ознакомления и настройки сцены, приступим к созданию её функционала. 
 
+!!!tip
+	Старайтесь не копировать ноды-дайкон. Это может способствовать возникновением непредвиденных ошибок.
+	Вместо этого создавайте ноды вручную.
+
 Прежде всего добавим все необходимые ноды к KinematicDaicon: 
 
 - Sprite2D
@@ -97,10 +101,10 @@ func _physics_process(delta: float) -> void:
 		player_animation(direction, d3.velocity)
 		update_pos()
 
-func player_animation(direction, velocity):
-	if velocity == Vector3.ZERO:
+func player_animation(direction, d3_velocity):
+	if d3_velocity == Vector3.ZERO:
 		animation.travel("Idle")
-	elif velocity != Vector3.ZERO:
+	elif d3_velocity != Vector3.ZERO:
 		if direction:
 			if d3.is_on_floor():
 				animation.travel("Move")
@@ -118,19 +122,41 @@ func set_animation_direction(direction):
 ```
 
 ---
-## Статичные обьекты
+## StaticDaicon - AnimatedDaicon
 
-Для статических обьектов используйте ноды **StaticDaicon** и **AnimatedDaicon**. Их отличия можно сравнить с отличиями StaticBody и AnimatedBody.
+> ![static_daicon.png](../assets/images/nodes/static_daicon.png)
+> 
+> ![animated_daicon.png](../assets/images/nodes/animated_daicon.png)
+> 
+> Для статических обьектов используйте ноды **StaticDaicon** и **AnimatedDaicon**. Их отличия можно сравнить с отличиями StaticBody и AnimatedBody.
+>
+>Принцип настройки и функционирования обеих нод схож с KinematicDaicon.
 
-Принцип настройки и функционирования обеих нод схож с KinematicDaicon.
+---
+## RigidDaicon
 
-![static_daicon.png](../assets/images/static_daicon.png)
+> ![rigid_daicon.png](../assets/images/nodes/rigid_daicon.png)
+> 
+> Для обьектов со сложной физикой есть **RigidDaicon**.
 
-![animated_daicon.png](../assets/images/animated_daicon.png)
+---
+## DaiconShadow
 
-!!!tip
-	Старайтесь не копировать ноды-дайкон. Это может способствовать возникновением непредвиденных ошибок.
-	Вместо этого создавайте ноды вручную.
+> ![daicon_shadow.png](../assets/images/nodes/daicon_shadow.png)
+> 
+> Нода DaiconShadow является двумерным спрайтом со встроенным ядром **CharacterBody3D**. Она получает входную ноду дайкон-родитель и создает тень
+> под обьектом, используя данные его ядра.
+
+![Pasted image 20250821081813.png](../assets/images/pasted-images/Pasted%20image%2020250821081813.png)
+
+- Поместите входную ноду в параметр **Daicon Parent** (эта нода будет проецироватьь тень)
+- Параметры  **tile_size** и **z_step** автоматически синхронизированы с родителем
+- Установите значение **min_distance** и **max_distance** (Смотрите раздел "Node Reference : DaiconShadow)
+- Выберите **Shadow Mode** - режим модуляции тени (Выцветание и насыщение)
+- Выберите **Stream Mode** - режим поведения физического тела ядра (Смотрите раздел "Node Reference : DaiconShadow)
+- Добавьте **Shape** (shape.size.y = 0 - это создаст необходимую плоскую модель коллизий)
+
+Далее **раздел Shape** служит для динамического изменения коллизий тени и по окончанию настройки не требуется - тень готова.
 
 ---
 ## Шейдеры
@@ -150,3 +176,4 @@ Daicon занимается динамическим обновлением эф
 Выберите ноды окружение, которые будут использовать шейдер. Для **DaiconMap**, в случае если слои были извлечены, шейдер нужно поставить для каждого такого слоя отдельно.
 
 Теперь достаточно заполнить список триггеров и целей, и настройка завершена.
+

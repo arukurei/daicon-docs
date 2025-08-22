@@ -30,3 +30,11 @@
 /// caption
 2025-03-04
 ///
+
+---
+## Version 1.5
+
+![type:video-tag](../assets/demo/trailer.mp4)
+/// caption
+2025-08-22
+///

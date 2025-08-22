@@ -1,13 +1,13 @@
 # DaiconMap
 
-![daicon-map.png](../assets/images/daicon-map.png)
+![daicon-map.png](../assets/images/nodes/daicon_map.png)
 
 This is a set of **TileMapLayers**, which in turn are layers of your environment.
 
 Each such layer contains a unique **z-index**, which is a measure of the height of that layer in space. In other words, **z-sorting** places objects on a modulo **Z** axis based on their index.
 
 ---
-## **Параметры**:
+## **Parameters**:
 
 ### - *grid_map*
 <p style="color:#ffb0e0;">GridMap</p>
@@ -27,6 +27,18 @@ Library of meshes from which the 3D environment is built.
 ### - *physics_material*
 <p style="color:#ffb0e0;">PhysicsMaterial</p>
 Used to determine the physical properties, such as friction and elasticity, of individual tiles.
+
+---
+### - *z_step*
+<p style="color:#ffb0e0;">int</p>
+Z-step in the sorting system between height levels.
+
+For example **z_step** = 10, then:
+
+Level -1 = -10
+Level 0 = 0
+Level 1 = 10
+Level 2 = 20
 
 ---
 ### - *size*
@@ -49,17 +61,7 @@ Collision layers for **grid_map**.
 Bake a navigation grid for 3D.
 
 ---
-### - *rotation_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-Core Rotation Customization.
-
----
-### - *scale_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-Customizing the scale of the core.
-
----
-## **Методы**:
+## **Methods**:
 ### - *_ready*
 
 Deploys the kernel at each startup. Performs basic configuration of the node.
@@ -98,13 +100,13 @@ Updates **grid_map**.
 func update_grid_map():
 	grid_map.clear()
 	for layer_index in range(0, get_layers_count()):
-		var z = get_layer_z_index(layer_index)
+		var z = get_layer_z_index(layer_index) / z_step
 		for tile in get_used_cells(layer_index):
 			var tile_data = get_cell_tile_data(layer_index, Vector2(tile.x, tile.y))
 			grid_map.set_cell_item(Vector3(tile.x, z-1, tile.y+z), tile_data.get_custom_data("Item"))
 	for layer in get_children():
 		if layer is TileMapLayer:
-			var z = layer.z_index
+			var z = layer.z_index / z_step
 			for tile in layer.get_used_cells():
 				var tile_data = layer.get_cell_tile_data(Vector2(tile.x, tile.y))
 				grid_map.set_cell_item(Vector3(tile.x, z-1, tile.y+z), tile_data.get_custom_data("Item"))

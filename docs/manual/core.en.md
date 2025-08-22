@@ -60,11 +60,6 @@ if node_1_properties and ClassDB.class_exists(node_1_properties.Class):
 		node.set(prop, node_1_properties.Properties[prop])
 ```
 
-!!!Warning
-	Take into account the fact that when a node is dipped into the kernel, its position, regardless of its previous position, moves to the center of the kernel and drops by 0.5:
-	
-	`node.position = Vector3(0, 0.5, 0)`.
-
 ---
 ## Addressing through code
 

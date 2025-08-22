@@ -1,29 +1,19 @@
 # StaticDaicon
 
-![static_daicon.png](../assets/images/static_daicon.png)
+![static_daicon.png](../assets/images/nodes/static_daicon.png)
 
-StaticDaicon - нода представляющая статический обьект.
+**StaticDaicon** - нода представляющая статический обьект.
 
 ---
 ## **Параметры**:
 
 ### - *d3*
-<p style="color:#ffb0e0;">CharacterBody3D</p>
+<p style="color:#ffb0e0;">StaticBody3D</p>
 Ядро StaticDaicon.
 
 ---
-### - *right_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-Отслеживает столкновения и работает в комплексе с **y** и **z-сортировками** для правильной отрисовки обьектов. Он определяет находиться ли обьект за заграждением или нет.
-
----
-### - *left_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
-Отслеживает столкновения и работает в комплексе с **y** и **z-сортировками** для правильной отрисовки обьектов. Он определяет находиться ли обьект за заграждением или нет.
-
----
-### - *center_whisker*
-<p style="color:#ffb0e0;">RayCast3D</p>
+### - *whisker*
+<p style="color:#ffb0e0;">Area3D</p>
 Отслеживает столкновения и работает в комплексе с **y** и **z-сортировками** для правильной отрисовки обьектов. Он определяет находиться ли обьект за заграждением или нет.
 
 ---
@@ -34,12 +24,30 @@ StaticDaicon - нода представляющая статический об
 ---
 ### - *tile_size*
 <p style="color:#ffb0e0;">int</p>
-Размер одной тайловой плитки (значение определяет количество пикселей которые проходит персонаж равные 1 метру).
+Размер плитки определяет, сколько пикселей соответствует 1 метру в 3D.
+(по сути, это размер плитки на размер ячейки в 3D)
 
 ---
 ### - *y_3d*
 <p style="color:#ffb0e0;">int</p>
 Позиция персонажа на оси Z.
+
+---
+### - *z_step*
+<p style="color:#ffb0e0;">int</p>
+Z-шаг в системе сортировки между уровнями высоты.
+
+Например **z_step** = 10, тогда:
+
+Уровень -1 = -10
+Уровень 0 = 0
+Уровень 1 = 10
+Уровень 2 = 20
+
+---
+### - *z_sort_coef*
+<p style="color:#ffb0e0;">int</p>
+Максимальная высота объекта в блоках (метрах). Используется в системе сортировки в качестве коэффициента.
 
 ---
 ### - *mesh*
@@ -57,7 +65,7 @@ StaticDaicon - нода представляющая статический об
 ---
 ### *Mesh & Shape-раздел*
 
-Раздел "Mesh & Shape" содержит параметры **Transform** для Mesh и Shape.
+Раздел "Mesh & Shape" содержит параметры для Mesh и Shape.
 
 ---
 ### *Slots-раздел*
@@ -95,9 +103,9 @@ StaticDaicon - нода представляющая статический об
 ---
 ### *RayCast-раздел*
 
-Раздел параметров для нод **Whiskers** и **ShaderCast**. 
+Раздел параметров для нод **Whisker** и **ShaderCast**. 
 
-`(Смотрите документацию Godot : RayCast3D)`
+`(Смотрите документацию Godot : Area3D - RayCast3D)`
 
 ---
 ## **Методы**:
@@ -108,30 +116,35 @@ StaticDaicon - нода представляющая статический об
 ---
 ### - *_process*
 
-> Работает только в редакторе.
-
-Синхронизирует перемещение ноды в 2D и её ядра в 3D. 
-
----
+Синхронизирует перемещение ноды в 2D и её ядра в 3D во время нахождение в редакторе.
+Также обновляет z_index во время игры.
 
 ---
 ### - *update_pos*
 
 ```python
-func update_pos(first_coef = 1.1, second_coef = 2.1):
-	self.position.x = d3.position.x * tile_size
-	self.position.y = d3.position.z * tile_size - d3.position.y * tile_size
-	if right_whisker.is_colliding() or left_whisker.is_colliding() or center_whisker.is_colliding():
-		self.z_index = d3.position.y + first_coef
-	else:
-		self.z_index = d3.position.y + second_coef
+func update_pos():
+	self.position.x = (d3.position.x - offset_3d.x) * tile_size
+	self.position.y = ((d3.position.z - offset_3d.z) - (d3.position.y - offset_3d.y)) * tile_size
 ```
 
 Функция обновляет позицию обьекта в 2D пространстве передавая ей трехмерные координаты ядра.
 
-**first_coef** определяет коэффициент к z-индексу когда обьект находиться  за заграждением.
+---
+### - *_update_z_index*
 
-**second_coef** определяет коэффициент к z-индексу когда **Whiskers** ни с чем не сталкиваются.
+```python
+func _update_z_index():
+	if whisker.get_overlapping_bodies():
+		if whisker.get_overlapping_bodies()[0].has_meta("z_index"):
+			self.z_index = whisker.get_overlapping_bodies()[0].get_meta("z_index") - 1
+		else:
+			self.z_index = (int(d3.position.y + (offset_3d.y * 1.1))) * z_step - 1
+	else:
+		self.z_index = ((d3.position.y - offset_3d.y) + z_sort_coef) * z_step + 2
+	
+	d3.set_meta("z_index", self.z_index)
+```
 
 ---
 ### - *get_node_properties*

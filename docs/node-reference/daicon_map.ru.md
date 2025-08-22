@@ -1,6 +1,6 @@
 # DaiconMap
 
-![daicon-map.png](../assets/images/daicon-map.png)
+![daicon-map.png](../assets/images/nodes/daicon_map.png)
 
 Представляет собой набор **TileMapLayers**, которые в свою очередь, являются уровнями вашего окружения.
 
@@ -29,6 +29,18 @@
 Используется для определения физических свойств, таких как трение и упругость, отдельных тайлов.
 
 ---
+### - *z_step*
+<p style="color:#ffb0e0;">int</p>
+Z-шаг в системе сортировки между уровнями высоты.
+
+Например **z_step** = 10, тогда:
+
+Уровень -1 = -10
+Уровень 0 = 0
+Уровень 1 = 10
+Уровень 2 = 20
+
+---
 ### - *size*
 <p style="color:#ffb0e0;">Vector3</p>
 Размер одного трехмерного тайла в метрах.
@@ -47,16 +59,6 @@
 ### - *bake_navigation*
 <p style="color:#ffb0e0;">bool</p>
 Запечь навигационную сетку для 3D.
-
----
-### - *rotation_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-Настройка поворота ядра.
-
----
-### - *scale_3d*
-<p style="color:#ffb0e0;">Vector3</p>
-Настройка масштаба ядра.
 
 ---
 ## **Методы**:
@@ -98,13 +100,13 @@ func get_cells() -> int:
 func update_grid_map():
 	grid_map.clear()
 	for layer_index in range(0, get_layers_count()):
-		var z = get_layer_z_index(layer_index)
+		var z = get_layer_z_index(layer_index) / z_step
 		for tile in get_used_cells(layer_index):
 			var tile_data = get_cell_tile_data(layer_index, Vector2(tile.x, tile.y))
 			grid_map.set_cell_item(Vector3(tile.x, z-1, tile.y+z), tile_data.get_custom_data("Item"))
 	for layer in get_children():
 		if layer is TileMapLayer:
-			var z = layer.z_index
+			var z = layer.z_index / z_step
 			for tile in layer.get_used_cells():
 				var tile_data = layer.get_cell_tile_data(Vector2(tile.x, tile.y))
 				grid_map.set_cell_item(Vector3(tile.x, z-1, tile.y+z), tile_data.get_custom_data("Item"))
