@@ -4,58 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9bf528ad-4f0f-49c7-b8b5-c8a88518a2d9" name="Changes" comment="Version 2.0 &quot;Japan&quot;">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.obsidian/core-plugins.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.obsidian/core-plugins.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/.obsidian/workspace.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.obsidian/workspace.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/animated_daicon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/daicon-map.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/daicon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/daicon_map_layer.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/kinematic_daicon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250222101034.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250222181615.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250222183205.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250302203525.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250302203525.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250304174251.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250304174555.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/assets/images/static_daicon.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/made-with-daicon/demo.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/made-with-daicon/demo.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/made-with-daicon/demo.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/made-with-daicon/demo.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/made-with-daicon/demo.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/made-with-daicon/demo.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/manual/core.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/manual/core.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/manual/core.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.en.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.ja.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.ru.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/overrides/main.html" beforeDir="false" afterPath="$PROJECT_DIR$/docs/overrides/main.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mkdocs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mkdocs.yml" afterDir="false" />
-    </list>
+    <list default="true" id="9bf528ad-4f0f-49c7-b8b5-c8a88518a2d9" name="Changes" comment="Daicon Version 1.5" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -84,14 +33,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/arukurei/Рабочий стол/Проекты/Проекты Python/daicon-docs/docs/getting-started&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/home/arukurei/Рабочий стол/Проекты/Проекты Python/daicon-docs/docs/getting-started",
+    "settings.editor.selected.configurable": "terminal"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/docs/getting-started" />
@@ -414,7 +363,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743343759769</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Daicon Version 1.5">
+      <option name="closed" value="true" />
+      <created>1755878573408</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1755878573408</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -444,6 +401,7 @@
     <MESSAGE value="font fix" />
     <MESSAGE value="ItchIO links" />
     <MESSAGE value="Version 2.0 &quot;Japan&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version 2.0 &quot;Japan&quot;" />
+    <MESSAGE value="Daicon Version 1.5" />
+    <option name="LAST_COMMIT_MESSAGE" value="Daicon Version 1.5" />
   </component>
 </project>
