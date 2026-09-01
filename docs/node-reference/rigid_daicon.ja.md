@@ -1,178 +1,45 @@
 # RigidDaicon
 
-![daicon.png](../assets/images/nodes/rigid_daicon.png)
+![rigid_daicon.png](../assets/images/nodes/rigid_daicon.png)
 
-**RigidDaicon** - 複雑な物理挙動を持つキネマティックオブジェクトを表すノードです。その核心は、物理シミュレーションによって移動される3次元物理ボディです。
+**RigidDaicon** — 木箱、押せる樽、転がる岩、瓦礫など、リアルな3D物理シミュレーションによって動くオブジェクト用のノードです。
 
----
-## **パラメーター**:
-
-### - *d3*
-<p style="color:#ffb0e0;">RigidBody3D</p>
-RigidDaiconのコア。
+内部で **`RigidBody3D`** コアを動作させます。質量、重力、摩擦、衝突による衝撃を考慮したGodotの物理エンジンによって移動が計算され、ノードがその位置と回転をリアルタイムに2D画面へ投影します。
 
 ---
-### - *whisker*
-<p style="color:#ffb0e0;">Area3D</p>
-これは衝突を追跡し、オブジェクトを正しくレンダリングするために **y** および **z-sorting** 連動します。オブジェクトがバリアの後ろにあるかどうかを判定します。
+
+## 物理挙動と特徴
+
+* **質量と重力:** オブジェクトの重量（`mass`）、表面の反発・摩擦（`physics_material_override`）、個別の重力倍率（`gravity_scale`）を柔軟に調整可能です。
+* **インパルスとフォース:** 通常の3D物理メソッド（`apply_central_impulse()`、`apply_torque_impulse()` 等）を使用してオブジェクトを吹き飛ばしたり転がしたりできます。
+* **フリーズ機能 (Freeze):** イベントや接触があるまで物理演算を停止させておく `freeze`（Static / Kinematicモード）に対応しています。
+* **自動同期:** ゲームプレイ中、`_physics_process()` 内で自動的に `update_pos()` が実行されるため、2Dスプライトが物理ボディからズレる心配がありません。
 
 ---
-### - *shader_cast*
-<p style="color:#ffb0e0;">RayCast3D</p>
-**ShaderCast** は特別な目的のノードです。その目的は、プレイヤーの前にあるオブジェクトとの衝突を検出し、それに基づいてシェーダーを描画することです。
 
----
-### - *tile_size*
-<p style="color:#ffb0e0;">int</p>
-タイルサイズとは、3D空間において1メートルに相当するピクセル数を決定するものです。
-（要するに、3D空間におけるセルサイズあたりのタイルサイズを指します）
+## スクリプトからの操作例
 
----
-### - *y_3d*
-<p style="color:#ffb0e0;">int</p>
-キャラクターのZ軸上の位置。
+爆発やプレイヤーのキックなどで衝撃を与える例：
 
----
-### - *z_step*
-<p style="color:#ffb0e0;">int</p>
-Zステップは、高さレベル間のソートシステムにおけるステップです。
+```gdscript
+@tool
+extends RigidDaicon
 
-例えば、**z_step** = 10の場合、次のように設定されます：
+func _physics_process(delta: float) -> void:
+    super._physics_process(delta)
+    if Engine.is_editor_hint(): return
 
-レベル -1 = -10
-レベル 0 = 0
-レベル 1 = 10
-レベル 2 = 20
-
----
-### - *mesh*
-<p style="color:#ffb0e0;">MeshInstance3D</p>
-カーネルに埋め込まれたメッシュ・ノード・セル（インストール後、3Dセクションで見ることができる）。
-セクション「**Core : mesh_properties**」に独自の辞書があります。
-
----
-### - *shape*
-<p style="color:#ffb0e0;">Node3D</p>
-コアに埋め込まれたシェイプノードのセル（コリジョンに必要）。
-**CollisionShape3D** または **CollisionPolygon3D** のみをスキップします。
-これは「**Core : shape_properties**」/"の下に独自の辞書を持っています。
-
----
-### *Mesh & Shape-セクション*
-
-「Mesh & Shape」セクションには、MeshとShapeのパラメーターが含まれています。
-
----
-### *Slots-セクション*
-<p style="color:#ffb0e0;">Node3D</p>
-スロット - 開発者ノードをコアに実装する必要がある場合のセル（コード経由の通信のみ）。
-
----
-### *Core-セクション*
-#### - *child_count*
-<p style="color:#ffb0e0;">int</p>
-カーネルの子ノードの数を常にカウントする。
-
----
-#### - *properties*
-<p style="color:#ffb0e0;">Dictionary</p>
-セルを介してカーネルに格納されるノードパラメータの辞書。カーネルの子ノードの動的展開に必要なすべてのパラメータを格納する。
-
----
-### *RigidBody3D-セクション*
-
-コアのルートノードのパラメーターセクション。
-
-`(Godotのドキュメントを参照：RigidBody3D)`
-
----
-### *CollisionObject3D-セクション*
-
-カーネルのルート・ノードのパラメータ・セクション。
-
-`(ドキュメントを見る Godot : CollisionObject3D)`
-
-!!!info
-	**axis_lock** も含まれる。
-
----
-### *RayCast-セクション*
-
-**Whisker** および **ShaderCast** ノードのパラメーターセクション。
-
-`(Godot のドキュメントを参照：Area3D - RayCast3D)`
-
----
-## **方法**:
-## - *_ready*
-
-各起動時にカーネルをデプロイする。ノードの基本設定を行います。
-
----
-### - *_process*
-
-> エディターでのみ動作します。
-
-2Dでのノードの動きと3Dでのコアの動きを同期させる。
-
----
-### - *_physics_process*
-
-オブジェクトの位置を更新します。
-
----
-### - *_update_pos*
-
-```python
-func update_pos(coef = 1):
-	self.position.x = (d3.position.x - offset_3d.x) * tile_size
-	self.position.y = ((d3.position.z - offset_3d.z) - (d3.position.y - offset_3d.y)) * tile_size
-	
-	if whisker.get_overlapping_bodies():
-		if whisker.get_overlapping_bodies()[0].has_meta("z_index"):
-			self.z_index = whisker.get_overlapping_bodies()[0].get_meta("z_index") - 1
-		else:
-			self.z_index = (int(d3.position.y + (offset_3d.y * 1.1))) * z_step - 1
-	else:
-		self.z_index = ((d3.position.y - offset_3d.y) + coef) * z_step + 2
-	
-	d3.set_meta("z_index", self.z_index)
+    # 例: インタラクション時に衝撃を加える
+    var body := core as RigidBody3D
+    if body and Input.is_action_just_pressed("ui_select"):
+        body.apply_central_impulse(Vector3(0, 5.0, -2.0))
 ```
 
-この関数は，コアの3次元座標を渡して，2次元空間におけるオブジェクトの位置を更新する．
-
-coef はオブジェクトの高さを決定します。
-
 ---
-### - *get_node_properties*
 
-```java
-func get_node_properties(node: Node) -> Dictionary:
-	var properties : Dictionary = {
-		"Name" : node.name,
-		"Class" : node.get_class(),
-		"Properties" : {}
-	}
-	for prop in node.get_property_list():
-		if prop.usage & PROPERTY_USAGE_STORAGE:
-			properties.Properties[prop.name] = node.get(prop.name)
-	return properties
-```
+## 設定手順
 
-この関数は、すべてのノードのパラメータ、名前、クラスを辞書に書き込み、それを返します。
-
----
-### - *_expand*
-
-```java
-func _expand()  -> void:
-	_expand_d3()
-	_expand_ray_cast()
-	if mesh_properties:
-		_expand_mesh()
-	if shape_properties:
-		_expand_shape()
-	_expand_slots()
-```
-
-この関数は、カーネルのデプロイメントを扱う。
+1. シーンに **RigidDaicon** を追加します。
+2. **Shape Node** スロットに衝突形状（`BoxShape3D`、`SphereShape3D`、`CylinderShape3D` など）を設定します。
+3. インスペクタで質量（`mass`）や減衰値（`Linear / Angular Damp`）を調整します。
+4. 正しい深度ソートのために **Whisker Shape Node** にも形状を割り当てます。

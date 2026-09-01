@@ -2,71 +2,15 @@
 
 ![daicon_map_layer.png](../assets/images/nodes/daicon_map_layer.png)
 
-**TileMapLayer** は、**DaiconMap** のコアを埋め込んだ、単一のローカルな独立したノード**TileMapLayer** を表します。
+**DaiconMapLayer** — 独立した3D `GridMap` コアを内蔵する単一の `TileMapLayer` ノードです。
 
-したがって、**DaiconMapLayer** はサポートノード、または特別な注意を必要とする環境の個々の要素を表すノードです。
-
----
-## **パラメーター**:
-
-### - *grid_map*
-<p style="color:#ffb0e0;">Array[Node]</p>
-DaiconMapコア。
+複数レイヤーをまとめる `DaiconMap` とは異なり、**1つのタイルレイヤー** を専任で管理します。取り外し可能な屋根、橋、破壊可能な足場、個別の透過シェーダーを適用したい壁など、特殊な制御が必要なオブジェクトに最適です。
 
 ---
-### - *mesh_library*
-<p style="color:#ffb0e0;">MeshLibrary</p>
-3D環境を構築するメッシュのライブラリ。
 
----
-### - *physics_material*
-<p style="color:#ffb0e0;">PhysicsMaterial</p>
-個々のタイルの摩擦や弾性などの物理的特性を測定するために使用される。
+## 特徴
 
----
-### - *size*
-<p style="color:#ffb0e0;">Vector3</p>
-メートル単位の立体タイルの大きさ。
-
----
-### - *layer*
-<p style="color:#ffb0e0;">int</p>
-**grid_map** のコリジョンレイヤー。
-
----
-### - *mask*
-<p style="color:#ffb0e0;">int</p>
-**grid_map** のコリジョンレイヤー。
-
----
-### - *bake_navigation*
-<p style="color:#ffb0e0;">bool</p>
-3D用のナビゲーショングリッドを焼く。
-
----
-## **方法**:
-### - *_ready*
-
-各起動時にカーネルをデプロイする。ノードの基本設定を行います。
-
----
-### - *_process*
-
-> エディターでのみ動作します。
-
-3Dタイルの数が2Dタイルの数と等しくない場合に **grid_map** を更新する（**update_grid_map**を呼び出す）。
-
-2Dのノードの動きと3Dのコアの動きを同期させる。
-
----
-### - *update_grid_map*
-
-**grid_map** を更新。
-
-```python
-func update_grid_map():
-	grid_map.clear()
-	for tile in get_used_cells():
-		var tile_data = get_cell_tile_data(Vector2(tile.x, tile.y))
-		grid_map.set_cell_item(Vector3(tile.x, z_index-1, tile.y+z_index), tile_data.get_custom_data("Item"))
-```
+* **独立した3Dコア:** 他のレイヤーから独立した専用の `GridMap` インスタンスを保持します。
+* **独立 Z-Index:** 自身の `z_index` の値に基づいて3Dの高さが直接計算されます：
+   $$\text{3D座標} = (\text{タイルX}, \ \text{z\_index} - 1, \ \text{タイルY} + \text{z\_index})$$
+* **透過シェーダーとの相性:** 単一ノードであるため、ルートノード `Daicon` の `shader_target_nodes` に直接登録して、屋根や壁の裏側にいるキャラクターを透過表示させる処理が極めて容易です。

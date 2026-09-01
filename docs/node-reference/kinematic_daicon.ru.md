@@ -2,172 +2,65 @@
 
 ![kinematic_daicon.png](../assets/images/nodes/kinematic_daicon.png)
 
-**KinematicDaicon** - нода представляющая кинематический обьект. В ней собрано всё необходимое чтобы создать двигающийся и взаимодействующий обьект.
+**KinematicDaicon** — это главная нода для создания управляемых персонажей, врагов, NPC и любых объектов с кинематическим движением.
+
+Внутри неё скрыто полноценное 3D-ядро **`CharacterBody3D`**. Вы управляете телом через привычные методы Godot (`velocity`, `move_and_slide()`, `is_on_floor()`), а нода сама проецирует все прыжки, скольжения по стенам и подъемы по склонам на 2D-экран.
 
 ---
-## **Параметры**:
 
-### - *d3*
-<p style="color:#ffb0e0;">CharacterBody3D</p>
-Ядро KinematicDaicon.
+## Код
 
----
-### - *whisker*
-<p style="color:#ffb0e0;">Area3D</p>
-Отслеживает столкновения и работает в комплексе с **y** и **z-сортировками** для правильной отрисовки обьектов. Он определяет находиться ли обьект за заграждением или нет.
+Создайте ноду в сцене, нажмите правой кнопкой мыши → **Расширить скрипт** и выберите шаблон `KinematicDaicon`.
 
----
-### - *shader_cast*
-<p style="color:#ffb0e0;">RayCast3D</p>
-**ShaderCast** - нода особого назначения. Её цель - определять столкновения с обьектами перед игроком и на основе этого рисовать шейдер.
+Вот готовый базовый пример управления персонажем:
 
----
-### - *tile_size*
-<p style="color:#ffb0e0;">int</p>
-Размер плитки определяет, сколько пикселей соответствует 1 метру в 3D.
-(по сути, это размер плитки на размер ячейки в 3D)
+```gdscript
+@tool
+extends KinematicDaicon
 
----
-### - *y_3d*
-<p style="color:#ffb0e0;">int</p>
-Позиция персонажа на оси Z.
+const SPEED := 5.0
+const JUMP_VELOCITY := 4.5
+const GRAVITY := 9.8
 
----
-### - *z_step*
-<p style="color:#ffb0e0;">int</p>
-Z-шаг в системе сортировки между уровнями высоты.
+func _physics_process(delta: float) -> void:
+    # В режиме редактора логику не запускаем
+    if Engine.is_editor_hint(): return
+    
+    # 1. Получаем доступ к 3D-ядру
+    var body := core as CharacterBody3D
+    if not body: return
 
-Например **z_step** = 10, тогда:
+    # 2. Считываем 2D-ввод и переводим в 3D (X и Z)
+    var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+    var direction := Vector3(input_dir.x, 0.0, input_dir.y).normalized()
 
-Уровень -1 = -10
-Уровень 0 = 0
-Уровень 1 = 10
-Уровень 2 = 20
+    # 3. Горизонтальное перемещение
+    if direction != Vector3.ZERO:
+        body.velocity.x = direction.x * SPEED
+        body.velocity.z = direction.z * SPEED
+    else:
+        body.velocity.x = move_toward(body.velocity.x, 0.0, SPEED)
+        body.velocity.z = move_toward(body.velocity.z, 0.0, SPEED)
 
----
-### - *mesh*
-<p style="color:#ffb0e0;">MeshInstance3D</p>
-Ячейка для меш-ноды которая встраивается в ядро (после установки вы можете увидеть её в разделе 3D).
-Имеет собственный словарь в разделе "Core": **mesh_properties**.
+    # 4. Гравитация и прыжок (ось Y)
+    if not body.is_on_floor():
+        body.velocity.y -= GRAVITY * delta
+    elif Input.is_action_just_pressed("ui_accept"):
+        body.velocity.y = JUMP_VELOCITY
 
----
-### - *shape*
-<p style="color:#ffb0e0;">Node3D</p>
-Ячейка для шейп-ноды которая встраивается в ядро (нужна для столкновений).
-Пропускает только **CollisionShape3D** или **CollisionPolygon3D**.
-Имеет собственный словарь в разделе "Core": **shape_properties**.
-
----
-### *Mesh & Shape-раздел*
-
-Раздел "Mesh & Shape" содержит параметры для Mesh и Shape.
-
----
-### *Slots-раздел*
-<p style="color:#ffb0e0;">Node3D</p>
-Слоты - ячейки для нод разработчика если потребуется внедрить их в ядро (связь только через код).
-
----
-### *Core-раздел*
-#### - *child_count*
-<p style="color:#ffb0e0;">int</p>
-Ведет постоянный счёт количества дочерних нод ядра.
-
----
-#### - *properties*
-<p style="color:#ffb0e0;">Dictionary</p>
-Словари параметров нод, занесенных в ядро через ячейки. Хранят все параметры необходимые для динамического развертывания дочерних нод ядра.
-
----
-### *KinematicBody3D-раздел*
-
-Раздел параметров для корневой ноды ядра. 
-
-`(Смотрите документацию Godot : CharacterBody3D / KinematicBody3D)`
-
----
-### *CollisionObject3D-раздел*
-
-Раздел параметров для корневой ноды ядра. 
-
-`(Смотрите документацию Godot : CollisionObject3D)`
-
-!!!info
-	Также содержит **axis_lock**.
-
----
-### *RayCast-раздел*
-
-Раздел параметров для нод **Whisker** и **ShaderCast**. 
-
-`(Смотрите документацию Godot : Area3D - RayCast3D)`
-
----
-## **Методы**:
-## - *_ready*
-
-При каждом запуске развертывает ядро. Проводит базовую настройку ноды.
-
----
-### - *_process*
-
-> Работает только в редакторе.
-
-Синхронизирует перемещение ноды в 2D и её ядра в 3D. 
-
----
-### - *update_pos*
-
-```python
-func update_pos(coef = 1):
-	self.position.x = (d3.position.x - offset_3d.x) * tile_size
-	self.position.y = ((d3.position.z - offset_3d.z) - (d3.position.y - offset_3d.y)) * tile_size
-	
-	if whisker.get_overlapping_bodies():
-		if whisker.get_overlapping_bodies()[0].has_meta("z_index"):
-			self.z_index = whisker.get_overlapping_bodies()[0].get_meta("z_index") - 1
-		else:
-			self.z_index = (int(d3.position.y + (offset_3d.y * 1.1))) * z_step - 1
-	else:
-		self.z_index = ((d3.position.y - offset_3d.y) + coef) * z_step + 2
-	
-	d3.set_meta("z_index", self.z_index)
+    # 5. Выполняем перемещение и синхронизируем 2D-спрайт
+    body.move_and_slide()
+    update_pos()
 ```
 
-Функция обновляет позицию обьекта в 2D пространстве передавая ей трехмерные координаты ядра.
-
-coef определяет высоту обьекта.
-
----
-### - *get_node_properties*
-
-```java
-func get_node_properties(node: Node) -> Dictionary:
-	var properties : Dictionary = {
-		"Name" : node.name,
-		"Class" : node.get_class(),
-		"Properties" : {}
-	}
-	for prop in node.get_property_list():
-		if prop.usage & PROPERTY_USAGE_STORAGE:
-			properties.Properties[prop.name] = node.get(prop.name)
-	return properties
-```
-
-Функция записывает все параметры ноды, её имя, а также класс в словарь и возвращает его.
+> [!TIP] Ось Z в 3D — это вертикаль экрана
+> Обратите внимание: ввод `input_dir.y` (вверх/вниз на клавиатуре) передается в `direction.z` 3D-мира. Так персонаж ходит вглубь сцены, а за прыжки и падения отвечает ось `Y`.
 
 ---
-### - *_expand*
 
-```java
-func _expand()  -> void:
-	_expand_d3()
-	_expand_ray_cast()
-	if mesh_properties:
-		_expand_mesh()
-	if shape_properties:
-		_expand_shape()
-	_expand_slots()
-```
+## Настройка коллизии
 
-Функция занимается развертыванием ядра.
+1. Добавьте в сцену узел `CollisionShape3D` (например, с формой `CapsuleShape3D` или `BoxShape3D`).
+2. В инспекторе `KinematicDaicon` выберите созданную ноду в поле **Shape Node**.
+3. Узел исчезнет из 2D-дерева и внедрится внутрь ядра.
+4. Назначьте форму в **Whisker Shape Node**, чтобы персонаж корректно скрывался за стенами.

@@ -1,174 +1,146 @@
-# Создание вашей игры
+# ゲームの作成
 
-簡単に慣れて、シーンを設定したら、機能を作り始めよう。
+基本シーンの準備が整ったら、実際のゲームプレイを構築していきましょう。アニメーションを実装し、リアルな影を投影し、壁の背後に隠れた際のシルエット透過シェーダーを設定します。
 
-まず、KinematicDaicon に必要なノードを追加します：
-
-- Sprite2D
-- Camera2D
-- AnimationPlayer
-- AnimationTree
-- **MeshInstance3D と CollisionShape3D** と同様です。
-
-KinematicDaicon の対応するセルに **Mesh** と **Shape** を配置する：
-
-- セルパラメーターの 「assign 」ボタンをクリックします。  
-- メッシュの希望のノードを選択します。  
-- 同じことを **Shape** にも行う
-
-!!!info
-	「CORE」セクションをチェックする。セルを埋めた後、コアに割り当てられたパラメータのリストが自動的に更新された。さらに、コアの子ノードの数が1つ増えた。
-	
-	ベースラインに戻るアイコンをクリックしようとすると、セルとそのパラメータ・リストは空になり、さっきまでセルにあったノードがエディタの表示に戻る。これはセル自体の横にある同じアイコンをクリックした場合と同じである。
-	
-	(カーネルの機能の詳細については 「Manual:Core」 を参照）。
+> [!TIP] ノード作成のコツ
+> すでに固有のスロットリソースが割り当てられているDaiconノードを `Ctrl+D` で安易に複製することは避けてください。新規ノードとして追加するか、設定済みのキャラクターを再利用可能なシーン（`.tscn`）として保存する方が安全です。
 
 ---
-## コード
 
-添付されている KinematicDaicon ノードの .gd ファイルに移動します。前のステップを正しく行った場合（特にスクリプトのオーバーライドが重要です）、コードは次のようになります：
+## 1. キャラクターの組み立て
 
-```java
+シーンに **KinematicDaicon** ノードを追加し、子ノードとして通常の2Dコンポーネントを配置します：
+
+* **Sprite2D** — キャラクタースプライト。
+* **Camera2D** — 追従カメラ。
+* **AnimationPlayer** および **AnimationTree** — 状態遷移管理（Idle, Move, Jump）。
+
+次に、3Dコリジョン形状をコアへ登録します：
+
+1. シーンツリー上に一時的な **CollisionShape3D** ノード（例: `CapsuleShape3D`）を作成します。
+2. `KinematicDaicon` のインスペクタで、作成したノードを **Shape Node** スロットに設定します。
+3. ノードが2Dツリーから消え、非表示の3Dコア内部へ自動的に注入されます。
+4. *(任意)* 壁の後ろに隠れた際の前後関係を正しく処理するため、**Whisker Shape Node** にも形状を設定します。
+
+> [!INFO] コアの状態を確認する
+> インスペクタの **Slots** グループにパラメータ辞書が記録され、3Dビューポートにワイヤーフレームが表示されます。スロット横のリセットアイコンを押せば、ノードはいつでも通常のシーンツリーへ復元されます。
+
+---
+
+## 2. 操作スクリプトとアニメーション制御
+
+`KinematicDaicon` のスクリプトを拡張します（ノード右クリック → **「スクリプトを拡張」** → `KinematicDaicon` テンプレートを選択）。
+
+以下は、8方向移動、ジャンプ、重力、`AnimationTree` のブレンド制御を含む実践的なコード例です：
+
+```gdscript
 @tool
 extends KinematicDaicon
 
-func _ready() -> void:
-	super._ready()
+const SPEED := 5.0
+const JUMP_VELOCITY := 5.0
+const GRAVITY := 10.0
+const ACCELERATION := 20.0
 
-func _process(delta: float) -> void:
-	super._process(delta)
-
-func _physics_process(delta: float) -> void:
-	if not Engine.is_editor_hint():
-		#LOGIC
-	
-		#LOGIC END
-	
-		#d3.move_and_slide()
-		#update_pos()
-		pass
-
-func _validate_property(property: Dictionary) -> void:
-	super._validate_property(property)
-
-```
-
-関数「_ready」、「_process」、および「_validate_property」には「super」構造が含まれています。オーバーライドしたノードのルート ファイルで同じ関数を呼び出します。したがって、このコードは、親ノードの機能を変更せずに何らかの方法で使用します。
-
-次に、ロジックとアニメーション・システムを追加しよう：
-
-```java
-@tool
-extends KinematicDaicon
-
-const SPEED = 5
-const JUMP_VELOCITY = 5
-const gravity = 10
-const accelaration = 20
-@onready var animation_tree : AnimationTree = $AnimationTree
-@onready var animation = animation_tree.get("parameters/playback")
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_playback = animation_tree.get("parameters/playback")
 
 var movement_input := Vector2.ZERO
 
-func _ready() -> void:
-	super._ready()
-	
-func _process(delta: float) -> void:
-	super._process(delta)
-	
-func _validate_property(property: Dictionary) -> void:
-	super._validate_property(property)
-
 func _physics_process(delta: float) -> void:
-	if not Engine.is_editor_hint():
-		movement_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-		var direction := Vector3(movement_input.x, 0, movement_input.y).normalized()
-		if direction != Vector3.ZERO:
-			set_animation_direction(movement_input)
-		
-		var y_vel = d3.velocity.y
-		d3.velocity = d3.velocity.move_toward(direction * SPEED, accelaration * delta)
-		d3.velocity.y = y_vel - gravity * delta
-		
-		if Input.is_action_just_pressed("ui_accept") and d3.is_on_floor():
-			d3.velocity.y += JUMP_VELOCITY
-			
-		d3.move_and_slide()
-		player_animation(direction, d3.velocity)
-		update_pos()
+    if Engine.is_editor_hint(): return
+    
+    var body := core as CharacterBody3D
+    if not body: return
 
-func player_animation(direction, d3_velocity):
-	if d3_velocity == Vector3.ZERO:
-		animation.travel("Idle")
-	elif d3_velocity != Vector3.ZERO:
-		if direction:
-			if d3.is_on_floor():
-				animation.travel("Move")
-			else:
-				animation.travel("Jump")
-		else:
-			if not d3.is_on_floor():
-				animation.travel("Jump Down")
+    # 1. 2D入力ベクトルの読み取り
+    movement_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+    var direction := Vector3(movement_input.x, 0.0, movement_input.y).normalized()
+    
+    # 2. 移動方向をアニメーションのブレンドツリーへ反映
+    if direction != Vector3.ZERO:
+        set_animation_direction(movement_input)
 
-func set_animation_direction(direction):
-	animation_tree.set("parameters/Idle/blend_position", direction)
-	animation_tree.set("parameters/Move/blend_position", direction)
-	animation_tree.set("parameters/Jump/blend_position", direction)
-	animation_tree.set("parameters/Jump Down/blend_position", direction)
+    # 3. 水平方向の加速と重力演算
+    var y_vel := body.velocity.y
+    body.velocity = body.velocity.move_toward(direction * SPEED, ACCELERATION * delta)
+    body.velocity.y = y_vel - GRAVITY * delta
+
+    # 4. ジャンプ処理
+    if Input.is_action_just_pressed("ui_accept") and body.is_on_floor():
+        body.velocity.y += JUMP_VELOCITY
+
+    # 5. 移動の実行と2Dスプライト同期
+    body.move_and_slide()
+    update_player_animation(direction, body.velocity)
+    update_pos()
+
+
+func update_player_animation(direction: Vector3, velocity: Vector3) -> void:
+    var body := core as CharacterBody3D
+    if not body or not animation_playback: return
+
+    if velocity.x == 0 and velocity.z == 0:
+        animation_playback.travel("Idle")
+    else:
+        if body.is_on_floor():
+            animation_playback.travel("Move")
+        else:
+            animation_playback.travel("Jump")
+
+
+func set_animation_direction(direction: Vector2) -> void:
+    if not animation_tree: return
+    animation_tree.set("parameters/Idle/blend_position", direction)
+    animation_tree.set("parameters/Move/blend_position", direction)
+    animation_tree.set("parameters/Jump/blend_position", direction)
 ```
 
 ---
-## StaticDaicon - AnimatedDaicon
 
-> ![static_daicon.png](../assets/images/nodes/static_daicon.png)
->
-> ![animated_daicon.png](../assets/images/nodes/animated_daicon.png)
->
-> 静的オブジェクトには、**StaticDaicon** と **AnimatedDaicon** ノードを使用してください。これらの違いは、StaticBody と AnimatedBody の違いと類似しています。
->
->両ノードの設定と動作の原理は、KinematicDaicon と同様です。
-
----
-## RigidDaicon
-
-
-> ![rigid_daicon.png](../assets/images/nodes/rigid_daicon.png)
->
-> 複雑な物理特性を持つオブジェクトには**RigidDaicon**が利用可能です。
-
----
-## DaiconShadow
+## 3. リアルな影の追加
 
 > ![daicon_shadow.png](../assets/images/nodes/daicon_shadow.png)
->
-> DaiconShadow ノードは、**CharacterBody3D** コアを内蔵した2次元スプライトです。親ダイコン ノードを入力として受け取り、そのコアのデータを使用してオブジェクトの下に影を生成します。
+> 
+> Daiconの影は手動の座標計算を必要とせず、地形の高さを自動スキャンします。
 
-![Pasted image 20250821081813.png](../assets/images/pasted-images/Pasted%20image%2020250821081813.png)
+1. **DaiconShadow** ノードを `KinematicDaicon` キャラクターの子として追加します。
+2. スプライトの `Texture` プロパティに影用テクスチャを設定します。
+3. インスペクタで **Debug Ray** を有効にして、床面スキャナーの光線を表示させます。
+4. 必要に応じて `footprint_radius`（接地半径）や `pivot_offset`（足元のオフセット）を調整します。
 
-- 入力ノードを**Daicon Parent**パラメーターに配置します（このノードが影を投影します）
-- **tile_size** と **z_step** のパラメーターは自動的に親と同期されます
-- **min_distance** と **max_distance** の値を設定します（詳細は「Node Reference : DaiconShadow」セクションを参照）
-- **Shadow Mode** を選択します - 影のモジュレーションモード （フェードと彩度）
-- **Stream Mode** を選択してください - 物理ボディのコアの動作モード（詳細は「Node Reference : DaiconShadow」セクションを参照）
-- **Shape** を追加（shape.size.y = 0 は必要な平面衝突モデルを作成します）
-
-次に、**Shape セクション** は影の衝突を動的に変更するために使用され、設定が完了すると必要ありません - 影は完成です。
+ジャンプ中も自動的に足元の高さを検知し、高度が上がるにつれて影が滑らかにフェードアウトします。
 
 ---
-## シェーダー
 
-Daicon ルート・ノードの主な目的は、シェーダーを描画することです。
+## 4. シルエット透過シェーダーの設定
 
-ノードのパラメータ・パネルには、トリガーとターゲットの2つのリストがあります。
+ルートノード **Daicon** の重要な役割は、高い壁や屋根の背後に隠れたキャラクターを透過表示することです：
 
-- トリガーは、ShaderCast などのカーネル内のシェーダーデザインメカニズムを含むノードです。  
-- ターゲットは、トリガーから情報を受け取り、指定された座標にシェーダーを描画するノードです。
+```mermaid
+graph LR
+    A(["🎯 Shader Trigger Nodes<br><small>プレイヤー (ShaderCast付きKinematicDaicon)</small>"]) --> B(["⚙️ Daicon (シーンルート)"])
+    B --> C(["🧱 Shader Target Nodes<br><small>透過シェーダー付き壁・DaiconMapLayer</small>"])
 
-Daiconは、エフェクトの動的な更新、リストの並べ替え、トリガーの状態の分析などを行う。
+    classDef purple fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef blue fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0369a1;
+    classDef emerald fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#065f46;
 
-!!!Info
-	プラグインは基本的なシェーダーも提供しており、アドオンディレクトリの 「shaders 」フォルダにあります。
+    class A purple;
+    class B blue;
+    class C emerald;
+```
 
-シェーダを使用する環境ノードを選択します。**DaiconMap** の場合、レイヤーが抽出されている場合は、レイヤーごとにシェーダーを設定する必要があります。
+1. キャラクターの **Shader Cast Node** スロットに `RayCast3D` が設定されていることを確認します。
+2. シーンのルートノード **Daicon** を選択します。
+3. **Shader Trigger Nodes** リストにプレイヤーを追加します。
+4. **Shader Target Nodes** リストに、透過させたい壁や `DaiconMapLayer` レイヤーを登録します。
+5. それらのターゲット層のマテリアルに `addons/daicon/shaders/` フォルダ内の透過シェーダーを設定します。
 
-あとはトリガーとターゲットのリストを埋めれば設定は完了です。
+---
+
+## その他のエンティティタイプ
+
+* **[StaticDaicon](../node-reference/static_daicon.md):** 静止した壁、障害物、装飾物に使用します。
+* **[AnimatedDaicon](../node-reference/animated_daicon.md):** 移動プラットフォーム、扉、トラップに使用します。
+* **[RigidDaicon](../node-reference/rigid_daicon.md):** 物理演算で転がる樽、木箱、瓦礫などに使用します。

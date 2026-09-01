@@ -1,113 +1,43 @@
 # DaiconMap
 
-![daicon-map.png](../assets/images/nodes/daicon_map.png)
+![daicon_map.png](../assets/images/nodes/daicon_map.png)
 
-これは **TileMapLayers** のセットであり、順番にあなたの環境のレイヤーである。
+**DaiconMap** — タイルマップシステムを活用して多層構造の2.5D環境を構築するためのメインノードです。
 
-このような各レイヤーは一意の **z-index** を含み、これは空間におけるそのレイヤーの高さの尺度です。言い換えると、**z-ソート** は、そのインデックスに基づいて、変更可能な **Z** 軸上にオブジェクトを配置します。
-
----
-## **パラメーター**:
-
-### - *grid_map*
-<p style="color:#ffb0e0;">GridMap</p>
-DaiconMapコア。
+Godotエディタ上で普段通りに2Dタイルを描くだけで、ノード内部の **`GridMap`** を介して本物の3Dボクセルワールドとコリジョンが自動生成されます。
 
 ---
-### - *cells_count*
-<p style="color:#ffb0e0;">int</p>
-立体的なタイルの数。
 
----
-### - *mesh_library*
-<p style="color:#ffb0e0;">MeshLibrary</p>
-3D環境を構築するメッシュのライブラリ。
+## 仕組み
 
----
-### - *physics_material*
-<p style="color:#ffb0e0;">PhysicsMaterial</p>
-個々のタイルの摩擦や弾性などの物理的特性を測定するために使用される。
+1. **2Dタイルと3Dメッシュの紐付け:** `TileSet` 内で、各タイルに数値パラメータ `Item`（`MeshLibrary` 内のメッシュID）を設定します。
+2. **斜め2.5D投影:** 各レイヤーは固有の `z_index` を持ちます。タイルを配置すると、以下の傾斜投影式に基づいて3D座標が自動計算されます：
+   $$\text{3D座標} = (\text{タイルX}, \ \text{レイヤーZ} - 1, \ \text{タイルY} + \text{レイヤーZ})$$
+3. **エディタ上のリアルタイム同期:** エディタ編集中にタイルの変更を常時監視し、3Dジオメトリとコリジョンを瞬時に再構築します。
 
----
-### - *z_step*
-<p style="color:#ffb0e0;">int</p>
-Zステップは、高さレベル間のソートシステムにおけるステップです。
+```mermaid
+graph LR
+    A(["🎨 2D レイヤータイル<br><small>異なる Z-Index を持つ TileMap</small>"]) -->|"Item パラメータ (Mesh ID)"| B(["⚙️ DaiconMap コンバータ<br><small>2.5D 傾斜投影計算</small>"])
+    B -->|"自動生成"| C(["🧱 3D GridMap<br><small>実際の3Dブロックとコリジョン</small>"])
 
-例えば、**z_step** = 10の場合、次のように設定されます：
+    classDef purple fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef blue fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0369a1;
+    classDef emerald fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#065f46;
 
-レベル -1 = -10
-レベル 0 = 0
-レベル 1 = 10
-レベル 2 = 20
-
----
-### - *size*
-<p style="color:#ffb0e0;">Vector3</p>
-メートル単位の立体タイルの大きさ。
-
----
-### - *layer*
-<p style="color:#ffb0e0;">int</p>
-**grid_map** のコリジョンレイヤー。
-
----
-### - *mask*
-<p style="color:#ffb0e0;">int</p>
-**grid_map** のコリジョンレイヤー。
-
----
-### - *bake_navigation*
-<p style="color:#ffb0e0;">bool</p>
-3D用のナビゲーショングリッドを焼く。
-
----
-## **方法**:
-### - *_ready*
-
-各起動時にカーネルをデプロイする。ノードの基本設定を行います。
-
----
-### - *_process*
-
-> エディターでのみ動作します。
-
-3Dタイルの数が2Dタイルの数と等しくない場合に **grid_map** を更新する（**update_grid_map**を呼び出す）。
-
-2Dのノードの動きと3Dのコアの動きを同期させる。
-
----
-### - *get_cells*
-
-3D環境で使用されている3Dタイルの数を返します。
-
-```python
-func get_cells() -> int:
-	_cells_count = 0
-	for layer_index in range(0, get_layers_count()):
-		_cells_count += len(get_used_cells(layer_index))
-	for layer in get_children():
-		if layer is TileMapLayer:
-			_cells_count += len(layer.get_used_cells())
-	return _cells_count
+    class A purple;
+    class B blue;
+    class C emerald;
 ```
 
 ---
-### - *update_grid_map*
 
-**grid_map** を更新。
+## 主な設定項目
 
-```python
-func update_grid_map():
-	grid_map.clear()
-	for layer_index in range(0, get_layers_count()):
-		var z = get_layer_z_index(layer_index) / z_step
-		for tile in get_used_cells(layer_index):
-			var tile_data = get_cell_tile_data(layer_index, Vector2(tile.x, tile.y))
-			grid_map.set_cell_item(Vector3(tile.x, z-1, tile.y+z), tile_data.get_custom_data("Item"))
-	for layer in get_children():
-		if layer is TileMapLayer:
-			var z = layer.z_index / z_step
-			for tile in layer.get_used_cells():
-				var tile_data = layer.get_cell_tile_data(Vector2(tile.x, tile.y))
-				grid_map.set_cell_item(Vector3(tile.x, z-1, tile.y+z), tile_data.get_custom_data("Item"))
-```
+* **Mesh Library (`mesh_library`):** マップ構築に使用する3Dブロックモデルのライブラリ（詳細は [メッシュライブラリガイド](../manual/mesh.md) を参照）。
+* **Cell Size (`size: Vector3`):** 1つの3Dボクセルのサイズ（メートル単位、デフォルトは `1x1x1`）。
+* **Z Step (`z_step: int`):** 高さレベル間の `z_index` のステップ幅（デフォルトは `10`）。例: レベル0 = `z_index 0`、レベル1 = `z_index 10`、レベル2 = `z_index 20`。
+* **Collision Layer & Mask:** キャラクターや物理ボディとの衝突を判定する3Dコリジョンレイヤー。
+* **Bake Navigation:** 敵の経路探索用 3D `NavigationMesh` のベイク設定。
+
+> [!TIP] レイヤーの個別ノード化
+> TileMap内部のレイヤーだけでなく、`DaiconMap` の子ノードとして個別の `TileMapLayer` を追加して描画した場合でも、同一の 3D GridMap へ自動的に統合されます。

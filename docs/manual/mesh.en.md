@@ -1,132 +1,100 @@
-# Mesh
+# 3D Meshes & MeshLibrary
 
-The **Mesh** and its corresponding **Mesh** define the 3D environment and other objects, which means that they are one of the most important details of a project.
+In Daicon, the 3D **mesh** and its corresponding **collision shape** define the world geometry and physical bounds of objects.
+
+Since meshes are primarily used for physics and collision detection, there is no need for complex, high-poly modeling. The main goal is calculating the correct dimensions of the 3D model based on your 2D sprites.
 
 ---
-## Markup
 
-Since the meshes will be used exclusively for collisions, we don't need a lot of modeling. The question is, how do we size the model based on 2D sprites? The solution is “markup”.
+## 1. Markup & Base Proportions
 
-The basic 3D block is 1x1x1 meter and this corresponds to two 2D tiles in orthographic projection (for lack of perspective):
+The standard 3D block measures **1×1×1 meter**. In an oblique 2.5D projection, this single cube corresponds to **two 2D tiles** (the top face and the front wall):
 
 ![Pasted image 20250301111246.png](../assets/images/pasted-images/Pasted%20image%2020250301111246.png)
 
-!!!note
-	The size of the tiles is NOT IMPORTANT. In this case it is 16x16 one tile (top is light). You can use 32x32, 48x48, 64x64, etc, which will also correspond to a 1x1x1 meter block.
-
-Needless to say, your game will not have orthographic projection, instead you will probably use normal perspective. Nevertheless, this is important from a technical point of view, and the tiles themselves can be drawn however you like.
+> [!NOTE] Tile Size
+> The actual pixel dimensions of your tiles can be anything: 16×16, 32×32, 48×48, 64×64, etc. In mathematical formulas, it is determined by the entity's `tile_size` property (by default, 16 pixels = 1 meter).
 
 ---
-### Constructor
 
-Let's consider a simple case where you can build meshes for objects as a constructor:
+### Method 1: The Constructor (Block Assembly)
+
+For simple structures (walls, crates, steps), the mesh can be assembled like building blocks out of standard 1-meter cubes:
 
 ![Pasted image 20250301114628.png](../assets/images/pasted-images/Pasted%20image%2020250301114628.png)
 
-!!!note
-	You will do something similar in the editor, when you will build a three-dimensional environment from individual tiles and attached to them elements of the mesha library.
+> [!INFO]
+> You will use the exact same modular approach when designing levels in the Godot editor using `DaiconMap`.
 
 ---
-### Proportion
 
-For particularly complex objects, the constructor method doesn't always work.
+### Method 2: Pixel-by-Pixel Math Proportions
 
-So you have a base tile of your chosen size (16x16 for example), which refers to a 1x1x1 meter block. This is how the proportion is formed:
+For complex objects (furniture, angled rooftops), dimensions are calculated pixel-by-pixel using a simple ratio.
 
-```
-16 -> 1 meter
-
-16 -> 1 meter
-```
-
-Now we need to calculate pixel by pixel the size of some element, taking into account the orthogonal projection. In other words, the width and height of the front and top:
+Given a base tile size of 16×16 pixels (= 1 meter), measure the pixel dimensions of the front and top faces of the sprite:
 
 ![Pasted image 20250301203823.png](../assets/images/pasted-images/Pasted%20image%2020250301203823.png)
 
-Following the proportion, we calculate the required size in meters for each axis:
+**Calculating dimensions in meters for each axis:**
 
-For the X axis:
+* **X Axis (Width):**
+  $$\text{X} = \frac{27 \text{ px} \times 1 \text{ m}}{16 \text{ px}} = 1.6875 \text{ m}$$
+* **Y Axis (Height):**
+  $$\text{Y} = \frac{15 \text{ px} \times 1 \text{ m}}{16 \text{ px}} = 0.9375 \text{ m}$$
+* **Z Axis (Depth):**
+  $$\text{Z} = \frac{15 \text{ px} \times 1 \text{ m}}{16 \text{ px}} = 0.9375 \text{ m}$$
 
-```
-16 -> 1 meter
-
-27 -> X meter
-
-X = (27*1)/16 = 1.6875
-```
-
-For the Y axis:
-
-```
-16 -> 1 meter
-
-15 -> Y meter
-
-Y = (15*1)/16 = 0.9375
-```
-
-For the Z axis:
-
-```
-16 -> 1 meter
-
-15 -> Z meter
-
-Z = (15*1)/16 = 0.9375
-```
-
-Now create a model based on the data you have obtained:
+Create the 3D model in your modeling suite (e.g. Blender) using these calculated dimensions:
 
 ![Pasted image 20250302112143.png](../assets/images/pasted-images/Pasted%20image%2020250302112143.png)
 
 ---
-### Image
 
-There is also a simpler alternative to proportions - using the sprites themselves.
-The idea is to create a model based on an already drawn sprite, and then scale it to the desired size.
+### Method 3: Modeling Over Sprites
 
-For example, this is how I made Mitsubishi Zero:
+For organic props or vehicles, you can use the drawn sprite directly as a reference image in Blender: model the rough silhouette directly over the texture, then scale the model to match the desired meter proportions.
+
+Example workflow for a Mitsubishi Zero fighter:
 
 ![Pasted image 20250302153040.png](../assets/images/pasted-images/Pasted%20image%2020250302153040.png)
 
 ![Zero.png](../assets/images/Zero.png)
 
 ---
-### Export
-### MeshLibrary
 
-For the meshes library, you have room for implementation - use the formats you are most comfortable with.
+## 2. Exporting MeshLibrary (For TileSets)
 
-For this example, I'll start with blender itself, where we'll create the meshes. To do this, you just need to add new geometry and edit its vertices - it's pretty simple. You should end up with a structure like this:
+To construct level maps in `DaiconMap`, you will need a **`MeshLibrary`** resource.
+
+### Blender Preparation:
+
+1. Build your collection of modular blocks (cubes, slopes, corner pieces).
+2. Ensure each block mesh is centered at its local coordinate origin.
 
 ![Pasted image 20250301124539.png](../assets/images/pasted-images/Pasted%20image%2020250301124539.png)
 
----
-
-Now let's move on to exporting. Choose any format that suits you; for example, I am using the **.blend** format and **.glb** as a similar alternative.
-
-1. Add `-col` to the name of each mesh object.
+3. **Collision Suffix:** Add `-col` to the end of each mesh object's name in Blender (e.g. `Wall-col`, `Slope-col`). Godot will automatically generate static collision shapes for them upon import.
 
 ![Pasted image 20250819190644.png](../assets/images/pasted-images/Pasted%20image%2020250819190644.png)
 
-2. Export the mesh in a format that is convenient for you
-3. Create a **new inherited scene** by right-clicking on the exported file in Godot
-4. In the open scene, go to the **“Scene”** section and export it as a **“Mesh Library”**
+### Exporting into Godot:
 
-!!!tip
-	The center of the blocks must match the center of the space in the editor
+1. Export the scene from Blender as a **`.blend`** or **`.glb`** file.
+2. In Godot, right-click the imported asset → **«New Inherited Scene»**.
+3. In the opened scene, go to the top menu: **Scene** → **Export As...** → **MeshLibrary** (`.tres` or `.res`).
+4. Assign the resulting library resource to the `mesh_library` property on your `DaiconMap`.
+
+> [!TIP] Origin Alignment
+> The base center of blocks in Blender must align precisely with the local origin `(0, 0, 0)`.
 
 ---
-### OBJ
 
-We will use the OBJ format for objects, as it is most suitable for our purposes.
+## 3. Exporting Discrete Objects (OBJ)
 
-1. Create a mesh.
-2. Export it to the **.obj** format.
-3. In the Godot editor, add **MeshInstance3D** to the scene.
-4. Hold down the imported OBJ mesh and drag it into **MeshInstance3D**.
+For standalone interactive objects (crates, barrels, vehicles), the **OBJ** format is ideal:
 
-After that, generate the grid as shown in the previous section and place these two objects in the core.
-
-!!!tip
-	The center of the object must coincide with the center of the space in the editor. In Godot, the mesh will be attached to the center of the object, and you can raise the object itself to the desired height in the “Transform” section.
+1. Model the mesh in your 3D software.
+2. Export it as an `.obj` file.
+3. In Godot, add a `MeshInstance3D` node to your scene and assign the `.obj` file to it.
+4. Assign the `MeshInstance3D` into the **Mesh Node** slot of the corresponding Daicon entity.

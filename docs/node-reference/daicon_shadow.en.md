@@ -1,216 +1,50 @@
 # DaiconShadow
 
-![kinematic_daicon.png](../assets/images/nodes/daicon_shadow.png)
+![daicon_shadow.png](../assets/images/nodes/daicon_shadow.png)
 
-**DaiconShadow** - the node creates a shadow under the selected object.
+**DaiconShadow** — is a 2D sprite with a built-in 3D surface scanner. The node projects a realistic shadow beneath your object, calculating 3D height variations and smoothly fading alpha in mid-air.
 
----
-## **Parameters**:
-
-### - *d3*
-<p style="color:#ffb0e0;">CharacterBody3D</p>
-DaiconShadow core.
+Unlike older approaches based on rigid bodies or character bodies, the new version uses a lightweight cylinder cast (`ShapeCast3D`) that puts virtually zero stress on the physics engine and finds the ground under your feet automatically.
 
 ---
-### *daicon_parent*
 
-<p style="color:#ffb0e0;">Node</p>
-The node to which the shadow is attached.
+## How It Works
 
----
-### - *tile_size*
-<p style="color:#ffb0e0;">int</p>
-Tile Size determines how many pixels equal 1 meter in 3D.
-(basically it is the tile size per cell size in 3D)
+You don't need to hook up node references manually:
 
-*Automatically synchronized with **daicon_parent***
+1. Add **DaiconShadow** as a child node to any Daicon entity (`KinematicDaicon`, `RigidDaicon`, etc.).
+2. The shadow automatically locates its parent via `find_parent_entity()` and injects a hidden `ShapeCast3D` cylinder sensor directly into its 3D core.
+3. The sensor continuously casts downward, finds the highest point of the ground beneath the object, and projects the 2D shadow sprite to the exact screen position with the correct `z_index`.
 
----
-### - *z_step*
-<p style="color:#ffb0e0;">int</p>
-Z-step in the sorting system between height levels.
+```mermaid
+graph LR
+    A(["🚀 3D Core core"]) -->|"auto-inject"| B(["🔍 ShapeCast3D"])
+    B -->|"scans floor"| C[("🧱 Surface")]
+    C -->|"height & distance"| D(["👥 2D DaiconShadow<br><small>Y-Position · Z-Index · Opacity</small>"])
 
-For example **z_step** = 10, then:
+    classDef purple fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef blue fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0369a1;
+    classDef amber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#92400e;
+    classDef emerald fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#065f46;
 
-Level -1 = -10
-Level 0 = 0
-Level 1 = 10
-Level 2 = 20
-
-*Automatically synchronized with **daicon_parent***
-
----
-### - *min_distance*
-<p style="color:#ffb0e0;">int</p>
-Minimum distance for texture modulation (in meters).
-
-- For coloration, the optimal value is 1 or more;
-- For discoloration, the optimal value is less than 1.
-
----
-### - *max_distance*
-<p style="color:#ffb0e0;">int</p>
-Maximum distance between parent and self (in meters).
-
----
-### *shadow_mode*
-
-<p style="color:#ffb0e0;">int</p>
-Shadow modulation mode: “Discoloration”, “Coloration”
-
----
-### *stream_mode*
-
-<p style="color:#ffb0e0;">int</p>
-
-Physical body core behavior mode: “Logic”, “Direct”
-
-**Logic** stream checks the body's state relative to the surface (is_on_floor). **Direct** does not.
-
----
-### - *shape*
-<p style="color:#ffb0e0;">Node3D</p>
-A cell for a shape-node that is embedded in the core (needed for collisions).
-Skips only **CollisionShape3D** or **CollisionPolygon3D**.
-Has its own dictionary in the Shape section: **shape_properties**.
-
----
-### *Shape-section*
-
-Contains parameters for Shape.
-
----
-### *KinematicBody3D-section*
-
-Parameter section for the root node of the kernel. 
-
-`(See Godot documentation : CharacterBody3D / KinematicBody3D)`.
-
----
-### *CollisionObject3D-section*
-
-Parameter section for the root node of the kernel. 
-
-`(See Godot documentation : CollisionObject3D)`.
-
-!!!info
-	Also contains **axis_lock**.
-
----
-## **Methods**:
-## - *_ready*
-
-Deploys the kernel at each startup. Performs basic configuration of the node.
-
----
-### - *_process*
-
-Synchronizes the movement of the node in 2D and its core in 3D.
-
-Adds collision exclusion with **daicon_parent**, updates shadow modulation (triggers once at startup).
-
----
-### - *physics_process*
-
-Updates the position of the core, updates z_index, draws a shadow.
-
-```python
-func _physics_process(delta: float) -> void:
-	if not Engine.is_editor_hint():
-		if daicon_parent and daicon_parent.d3:
-			var distance := d3.position.distance_to(daicon_parent.d3.global_position - daicon_parent.offset_3d)
-			
-			if stream_mode:
-				#direct
-				_update_direct_position(distance)
-			elif not stream_mode:
-				#logic
-				_update_position(distance, delta)
+    class A purple;
+    class B blue;
+    class C amber;
+    class D emerald;
 ```
 
 ---
-### *_update_modulation*
 
-```python
-func _update_modulation(distance):
-	if shadow_mode:
-		#coloration
-		if distance > min_distance:
-			self.modulate.a = _initial_alpha
-		else:
-			self.modulate.a = lerp(0.0, _initial_alpha, distance / min_distance)
-	elif not shadow_mode:
-		#discoloration
-		if distance > min_distance:
-			self.modulate.a = lerp(0.0, _initial_alpha, min_distance / distance)
-		else:
-			self.modulate.a = _initial_alpha
-```
-
-This function updates the transparency of the shadow.
+> [!TIP] Quick Sprite Alignment
+> Enable **Debug Ray** in the inspector to see the actual sensor radius and height line directly inside the 2D viewport. This makes aligning your shadow texture with character feet effortless.
 
 ---
-### - *update_pos*
 
-```python
-func _update_position(distance, delta):
-	if daicon_parent.d3.is_on_floor():
-		self.visible = true
-		_update_modulation(distance)
-		
-		self.position.y = start_y
-		d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-		self.z_index = (round(d3.position.y + 0.3) * z_step) + 1
-	else:
-		if distance < max_distance:
-			d3.velocity.y -= GRAVITY * delta
-		else:
-			self.visible = false
-			d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-		
-		if d3.is_on_floor():
-			self.visible = true
-			_update_modulation(distance)
-			self.position.y = start_y + (distance * tile_size)
-			self.z_index = (round(d3.position.y + 0.3) * z_step) + 1
-			d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-	d3.move_and_slide()
-```
+## In-Game Behavior & Sorting
 
-The function updates the position of an object in 2D space and determines the z_index of the node.
-(for logic stream)
+1. **On the ground (`is_on_floor`):** The shadow snaps to the soles instantly with zero lag or floaty interpolation.
+2. **In the air:** The shadow fades out smoothly as height increases (between `fade_start_distance` and `max_distance`).
+3. **Smart Z-Index:** The shadow always determines the height level of the detected floor point and is guaranteed to render beneath the character's feet (`z_index = min(floor_z, parent.z_index - 1)`).
 
----
-### - *_update_direct_position*
-
-```python
-func _update_direct_position(distance):
-	if distance < max_distance:
-		d3.velocity.y = -GRAVITY
-	else:
-		self.visible = false
-		d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-	
-	if d3.is_on_floor():
-		self.visible = true
-		_update_modulation(distance)
-		self.position.y = start_y + (distance * tile_size)
-		self.z_index = (round(d3.position.y + 0.3) * z_step) + 1
-		d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-	d3.move_and_slide()
-```
-
-The function updates the position of an object in 2D space and determines the z_index of the node.
-(for direct stream)
-
----
-### - *_expand*
-
-```java
-func _expand() -> void:
-	_expand_d3()
-	if shape_properties:
-		_expand_shape()
-```
-
-The function is responsible for deploying the core.
+> [!WARNING] Hierarchy Rule
+> `DaiconShadow` must always be a descendant (at any nesting level) of a `DaiconEntity`. Moving it outside of an entity will cause the editor to display a configuration warning in the scene tree.

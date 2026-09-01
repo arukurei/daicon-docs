@@ -1,113 +1,43 @@
 # DaiconMap
 
-![daicon-map.png](../assets/images/nodes/daicon_map.png)
+![daicon_map.png](../assets/images/nodes/daicon_map.png)
 
-This is a set of **TileMapLayers**, which in turn are layers of your environment.
+**DaiconMap** — is the primary node for building multi-layered 2.5D level environments using Godot's tile system.
 
-Each such layer contains a unique **z-index**, which is a measure of the height of that layer in space. In other words, **z-sorting** places objects on a modulo **Z** axis based on their index.
-
----
-## **Parameters**:
-
-### - *grid_map*
-<p style="color:#ffb0e0;">GridMap</p>
-DaiconMap Core.
+You paint the level using familiar 2D tiles in the editor, and the node automatically constructs a full 3D voxel world beneath them via an internal **`GridMap`**.
 
 ---
-### - *cells_count*
-<p style="color:#ffb0e0;">int</p>
-Number of three-dimensional tiles.
 
----
-### - *mesh_library*
-<p style="color:#ffb0e0;">MeshLibrary</p>
-Library of meshes from which the 3D environment is built.
+## How It Works
 
----
-### - *physics_material*
-<p style="color:#ffb0e0;">PhysicsMaterial</p>
-Used to determine the physical properties, such as friction and elasticity, of individual tiles.
+1. **2D Tiles Map to 3D Meshes:** Inside the `TileSet`, each tile receives an `Item` integer custom data property (the mesh ID from your `MeshLibrary`).
+2. **Tilted 2.5D Perspective:** Each layer carries its own `z_index`. When painting tiles, Daicon calculates the 3D position using the oblique projection formula:
+   $$\text{3D Position} = (\text{Tile X}, \ \text{Layer Z} - 1, \ \text{Tile Y} + \text{Layer Z})$$
+3. **Real-Time Editor Sync:** During level design, the map tracks tile count changes and instantly rebuilds 3D collisions and geometry.
 
----
-### - *z_step*
-<p style="color:#ffb0e0;">int</p>
-Z-step in the sorting system between height levels.
+```mermaid
+graph LR
+    A(["🎨 2D Layered Tiles<br><small>TileMap with distinct Z-Indices</small>"]) -->|"Item Property (Mesh ID)"| B(["⚙️ DaiconMap Converter<br><small>2.5D Oblique Formula</small>"])
+    B -->|"Auto-Generation"| C(["🧱 3D GridMap<br><small>Real 3D Collisions & Meshes</small>"])
 
-For example **z_step** = 10, then:
+    classDef purple fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef blue fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0369a1;
+    classDef emerald fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#065f46;
 
-Level -1 = -10
-Level 0 = 0
-Level 1 = 10
-Level 2 = 20
-
----
-### - *size*
-<p style="color:#ffb0e0;">Vector3</p>
-The size of one three-dimensional tile in meters.
-
----
-### - *layer*
-<p style="color:#ffb0e0;">int</p>
-Collision layers for **grid_map**.
-
----
-### - *mask*
-<p style="color:#ffb0e0;">int</p>
-Collision layers for **grid_map**.
-
----
-### - *bake_navigation*
-<p style="color:#ffb0e0;">bool</p>
-Bake a navigation grid for 3D.
-
----
-## **Methods**:
-### - *_ready*
-
-Deploys the kernel at each startup. Performs basic configuration of the node.
-
----
-### - *_process*
-
-> Works only in the editor.
-
-Updates **grid_map** when the number of 3D tiles is not equal to the number of 2D tiles (calls **update_grid_map**).
-
-Synchronizes moving of node in 2D and its core in 3D. 
-
----
-### - *get_cells*
-
-Returns the number of 3D tiles used in the 3D environment.
-
-```python
-func get_cells() -> int:
-	_cells_count = 0
-	for layer_index in range(0, get_layers_count()):
-		_cells_count += len(get_used_cells(layer_index))
-	for layer in get_children():
-		if layer is TileMapLayer:
-			_cells_count += len(layer.get_used_cells())
-	return _cells_count
+    class A purple;
+    class B blue;
+    class C emerald;
 ```
 
 ---
-### - *update_grid_map*
 
-Updates **grid_map**.
+## Key Settings
 
-```python
-func update_grid_map():
-	grid_map.clear()
-	for layer_index in range(0, get_layers_count()):
-		var z = get_layer_z_index(layer_index) / z_step
-		for tile in get_used_cells(layer_index):
-			var tile_data = get_cell_tile_data(layer_index, Vector2(tile.x, tile.y))
-			grid_map.set_cell_item(Vector3(tile.x, z-1, tile.y+z), tile_data.get_custom_data("Item"))
-	for layer in get_children():
-		if layer is TileMapLayer:
-			var z = layer.z_index / z_step
-			for tile in layer.get_used_cells():
-				var tile_data = layer.get_cell_tile_data(Vector2(tile.x, tile.y))
-				grid_map.set_cell_item(Vector3(tile.x, z-1, tile.y+z), tile_data.get_custom_data("Item"))
-```
+* **Mesh Library (`mesh_library`):** The collection of 3D block models used to construct the level (see [Mesh Library Manual](../manual/mesh.md)).
+* **Cell Size (`size: Vector3`):** Size of each 3D block in meters (default `1x1x1`).
+* **Z Step (`z_step: int`):** The `z_index` step between elevation tiers (default is `10`). E.g. Tier 0 = `z_index 0`, Tier 1 = `z_index 10`, Tier 2 = `z_index 20`.
+* **Collision Layer & Mask:** 3D physics collision filtering against characters and rigid props.
+* **Bake Navigation:** Bakes a 3D `NavigationMesh` for enemy pathfinding across the tilemap.
+
+> [!TIP] Standalone Layer Nodes
+> You can use TileMap internal layers or extract them as child `TileMapLayer` nodes under `DaiconMap` — both are automatically aggregated into the single 3D GridMap.

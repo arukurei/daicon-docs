@@ -1,215 +1,50 @@
 # DaiconShadow
 
-![kinematic_daicon.png](../assets/images/nodes/daicon_shadow.png)
+![daicon_shadow.png](../assets/images/nodes/daicon_shadow.png)
 
-**DaiconShadow** - нода создает тень под выбранным обьектом.
+**DaiconShadow** — это 2D-спрайт со встроенным 3D-сканером поверхности. Нода проецирует реалистичную тень под объектом, рассчитывая перепады высоты в 3D-мире и плавно меняя прозрачность в воздухе.
 
----
-## **Параметры**:
-
-### - *d3*
-<p style="color:#ffb0e0;">CharacterBody3D</p>
-Ядро DaiconShadow.
+В отличие от старых решений с физическими телами, новая версия использует легковесный цилиндрический каст (`ShapeCast3D`), который не нагружает физический движок и автоматически находит пол под ногами.
 
 ---
-### *daicon_parent*
 
-<p style="color:#ffb0e0;">Node</p>
-Узел, к которому прикреплена тень.
+## Как это работает
 
----
-### - *tile_size*
-<p style="color:#ffb0e0;">int</p>
-Размер плитки определяет, сколько пикселей соответствует 1 метру в 3D.
-(по сути, это размер плитки на размер ячейки в 3D)
+Вам не нужно вручную связывать ноды через ссылки:
 
-*Автоматически синхронизирован с **daicon_parent***
+1. Добавьте **DaiconShadow** дочерним узлом к любой Daicon-сущности (`KinematicDaicon`, `RigidDaicon` и т.д.)
+2. Тень сама найдет родителя через `find_parent_entity()` и автоматически внедрит в его 3D-ядро скрытый сенсор `ShapeCast3D` в форме цилиндра.
+3. Сенсор непрерывно стреляет вниз, находит наивысшую точку пола под ногами и проецирует 2D-спрайт тени на нужную экранную высоту с правильным `z_index`.
 
----
-### - *z_step*
-<p style="color:#ffb0e0;">int</p>
-Z-шаг в системе сортировки между уровнями высоты.
+```mermaid
+graph LR
+    A(["🚀 3D-ядро core"]) -->|"инъекция"| B(["🔍 ShapeCast3D"])
+    B -->|"скан пола"| C[("🧱 Поверхность")]
+    C -->|"высота и дистанция"| D(["👥 2D DaiconShadow<br><small>Y-позиция · Z-Index · Прозрачность</small>"])
 
-Например **z_step** = 10, тогда:
+    classDef purple fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef blue fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0369a1;
+    classDef amber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#92400e;
+    classDef emerald fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#065f46;
 
-Уровень -1 = -10
-Уровень 0 = 0
-Уровень 1 = 10
-Уровень 2 = 20
-
-*Автоматически синхронизирован с **daicon_parent***
-
----
-### - *min_distance*
-<p style="color:#ffb0e0;">int</p>
-Минимальное расстояние для модуляции текстуры (в метрах).
-
-- Для окрашивания оптимальное значение составляет 1 и более;
-- Для обесцвечивания оптимальное значение составляет менее 1.
-
----
-### - *max_distance*
-<p style="color:#ffb0e0;">int</p>
-Максимальное расстояние между родителем и собой (в метрах).
-
----
-### *shadow_mode*
-
-<p style="color:#ffb0e0;">int</p>
-Режим модуляции тени: "Discoloration", "Coloration"
-
----
-### *stream_mode*
-
-<p style="color:#ffb0e0;">int</p>
-Режим поведения ядра физического тела: "Logic", "Direct"
-
-**Logic** поток проверяет состояние тела относительно поверхности (is_on_floor). **Direct** - нет.
-
----
-### - *shape*
-<p style="color:#ffb0e0;">Node3D</p>
-Ячейка для шейп-ноды которая встраивается в ядро (нужна для столкновений).
-Пропускает только **CollisionShape3D** или **CollisionPolygon3D**.
-Имеет собственный словарь в разделе "Core": **shape_properties**.
-
----
-### *Shape-раздел*
-
-Cодержит параметры для  Shape.
-
----
-### *KinematicBody3D-раздел*
-
-Раздел параметров для корневой ноды ядра. 
-
-`(Смотрите документацию Godot : CharacterBody3D / KinematicBody3D)`
-
----
-### *CollisionObject3D-раздел*
-
-Раздел параметров для корневой ноды ядра. 
-
-`(Смотрите документацию Godot : CollisionObject3D)`
-
-!!!info
-	Также содержит **axis_lock**.
-
----
-## **Методы**:
-## - *_ready*
-
-При каждом запуске развертывает ядро. Проводит базовую настройку ноды.
-
----
-### - *_process*
-
-Синхронизирует перемещение ноды в 2D и её ядра в 3D. 
-
-Добавляет в исключение коллизии с **daicon_parent**, обновляет модуляцию тени (срабатывает единожды при запуске).
-
----
-### - *physics_process*
-
-Обновляет позицию ядра, обновляет z_index, рисует тень.
-
-```python
-func _physics_process(delta: float) -> void:
-	if not Engine.is_editor_hint():
-		if daicon_parent and daicon_parent.d3:
-			var distance := d3.position.distance_to(daicon_parent.d3.global_position - daicon_parent.offset_3d)
-			
-			if stream_mode:
-				#direct
-				_update_direct_position(distance)
-			elif not stream_mode:
-				#logic
-				_update_position(distance, delta)
+    class A purple;
+    class B blue;
+    class C amber;
+    class D emerald;
 ```
 
 ---
-### *_update_modulation*
 
-```python
-func _update_modulation(distance):
-	if shadow_mode:
-		#coloration
-		if distance > min_distance:
-			self.modulate.a = _initial_alpha
-		else:
-			self.modulate.a = lerp(0.0, _initial_alpha, distance / min_distance)
-	elif not shadow_mode:
-		#discoloration
-		if distance > min_distance:
-			self.modulate.a = lerp(0.0, _initial_alpha, min_distance / distance)
-		else:
-			self.modulate.a = _initial_alpha
-```
-
-Функция обновляет прозрачность тени.
+> [!TIP] Быстрая настройка под спрайт
+> Включите **Debug Ray**, чтобы видеть реальный радиус сенсора и точно подогнать размер текстуры тени под ноги персонажа прямо во вьюпорте.
 
 ---
-### - *_update_position*
 
-```python
-func _update_position(distance, delta):
-	if daicon_parent.d3.is_on_floor():
-		self.visible = true
-		_update_modulation(distance)
-		
-		self.position.y = start_y
-		d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-		self.z_index = (round(d3.position.y + 0.3) * z_step) + 1
-	else:
-		if distance < max_distance:
-			d3.velocity.y -= GRAVITY * delta
-		else:
-			self.visible = false
-			d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-		
-		if d3.is_on_floor():
-			self.visible = true
-			_update_modulation(distance)
-			self.position.y = start_y + (distance * tile_size)
-			self.z_index = (round(d3.position.y + 0.3) * z_step) + 1
-			d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-	d3.move_and_slide()
-```
+## Поведение в игре и сортировка
 
-Функция обновляет позицию обьекта в 2D пространстве, определяет z_index ноды.
-(для логического потока)
+1. **Если персонаж на земле (`is_on_floor`):** Тень мгновенно привязывается к подошве без задержек и интерполяций.
+2. **Если персонаж в воздухе:** Тень плавно растворяется в диапазоне между `fade_start_distance` и `max_distance`.
+3. **Автоматический Z-Index:** Тень всегда рассчитывает свой уровень высоты на основе найденной точки пола и гарантированно рендерится под ногами персонажа (`z_index = min(floor_z, parent.z_index - 1)`).
 
----
-### - *_update_direct_position*
-
-```python
-func _update_direct_position(distance):
-	if distance < max_distance:
-		d3.velocity.y = -GRAVITY
-	else:
-		self.visible = false
-		d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-	
-	if d3.is_on_floor():
-		self.visible = true
-		_update_modulation(distance)
-		self.position.y = start_y + (distance * tile_size)
-		self.z_index = (round(d3.position.y + 0.3) * z_step) + 1
-		d3.position = daicon_parent.d3.position - daicon_parent.offset_3d
-	d3.move_and_slide()
-```
-
-Функция обновляет позицию обьекта в 2D пространстве, определяет z_index ноды.
-(для прямого потока)
-
----
-### - *_expand*
-
-```java
-func _expand() -> void:
-	_expand_d3()
-	if shape_properties:
-		_expand_shape()
-```
-
-Функция занимается развертыванием ядра.
+> [!WARNING] Правило иерархии
+> `DaiconShadow` обязательно должна быть дочерней нодой (на любом уровне вложенности) внутри `DaiconEntity`. Если вынести её за пределы сущности, редактор выдаст предупреждение в дереве сцены.

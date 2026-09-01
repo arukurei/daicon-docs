@@ -4,7 +4,54 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9bf528ad-4f0f-49c7-b8b5-c8a88518a2d9" name="Changes" comment="Daicon Version 1.5" />
+    <list default="true" id="9bf528ad-4f0f-49c7-b8b5-c8a88518a2d9" name="Changes" comment="Daicon Version 1.5">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250819124843.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/images/pasted-images/Pasted image 20250821081813.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contributing.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contributing.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contributing.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contributing.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/contributing.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/contributing.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/creating_your_game.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/getting_started.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/getting_started.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/getting_started.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/getting_started.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/getting_started.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/getting_started.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/getting-started/setup.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/getting-started/setup.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/core.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/core.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/core.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/core.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/manual/mesh.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/manual/mesh.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/animated_daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_map_layer.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_shadow.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_shadow.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_shadow.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_shadow.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/daicon_shadow.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/daicon_shadow.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/kinematic_daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/rigid_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/rigid_daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/rigid_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/rigid_daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/rigid_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/rigid_daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.en.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.en.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.ja.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.ja.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/node-reference/static_daicon.ru.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/node-reference/static_daicon.ru.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mkdocs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mkdocs.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,7 +69,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/arukurei/daicon-docs.git&quot;,
-    &quot;accountId&quot;: &quot;e09187c1-f778-4421-85d4-95eb17c0d04c&quot;
+    &quot;accountId&quot;: &quot;1f06aaa5-e109-4591-8afe-8e926c3bf395&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -33,14 +80,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/arukurei/Рабочий стол/Проекты/Проекты Python/daicon-docs/docs/getting-started",
-    "settings.editor.selected.configurable": "terminal"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/arukurei/Рабочий стол/Проекты/Проекты Python/daicon-docs/docs/getting-started&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/docs/getting-started" />
@@ -51,7 +101,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-0e3be3396995-c546a90a8094-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.23339.19" />
+        <option value="bundled-python-sdk-50341a9f1f9c-c2ffad84badb-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-261.26222.68" />
       </set>
     </attachedChunks>
   </component>
@@ -373,6 +423,9 @@
     </task>
     <option name="localTasksCounter" value="39" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">

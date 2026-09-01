@@ -1,60 +1,83 @@
-# Daicon
+# Daicon (シェーダールートノード)
 
 ![daicon.png](../assets/images/nodes/daicon.png)
 
-**Daicon** は、シェーダーを担当するシーンのルートノードです。
+**Daicon** — グローバルな2.5Dソート（`y_sort`）と遮蔽物のシルエット透過システム（X線・壁裏透過シェーダー）を統括するシーンのルートノードです。
+
+2.5Dゲームでは、高い壁や多層構造の建物の後ろにキャラクターが隠れてしまうことが頻繁にあります。`Daicon` ノードはエンティティと障害物の架け橋となり、壁に隠れたキャラクターの正確な画面座標を取得して、環境マテリアルのシェーダーへリアルタイムに渡します。
 
 ---
-## **パラメータ**:
 
-### - *shader_trigger_nodes*
-<p style="color:#ffb0e0;">Array[Node]</p>
-ターゲットノード上で **ShaderCast** または他のシェーダ設計メカニズムを使用するトリガノードのリスト。
+## アーキテクチャ: トリガーとターゲット
 
-!!!note
-	トリガーノードには、必ず ShaderCast または他のシェーダー設計メカニズムが含まれていなければなりません。そうでなければエラーとなる。
-	
----
-### - *shader_target_nodes*
-<p style="color:#ffb0e0;">Array[Node]</p>
-ターゲットノードのリスト。トリガノードから送信された位置情報を使用してシェーダを描画します。
+このシステムは、2つのノードグループ間を繋ぐ中央ディスパッチャーとして機能します：
 
----
-### - *PositionArray*
-<p style="color:#ffb0e0;">Array[Vector2]</p>
-画面上のすべてのシェーダーの位置のリストを動的に更新する。
+* **トリガー (`shader_trigger_nodes`):** プレイヤーや重要なインタラクティブオブジェクト。ノードは各エンティティの `shader_cast`（カメラ方向／前方へ向けられたRayCast3D）を監視します。光線が前方の障害物に当たると、トリガーが有効化されます。
+* **ターゲット (`shader_target_nodes`):** キャラクターの背後に入った際に半透明化させたい壁、屋根、および `DaiconMapLayer` タイル層（シルエットシェーダーマテリアル適用済み）。
 
----
-## **方法**:
+```mermaid
+graph LR
+    A(["🎯 トリガー (プレイヤー)<br><small>ShaderCastが壁を検知</small>"]) -->|"画面座標データ"| B(["⚙️ Daicon ルートノード<br><small>Z-Index ソート処理</small>"])
+    B -->|"シェーダーパラメータ"| C(["🧱 ターゲット (壁 / DaiconMapLayer)<br><small>プレイヤー周囲をシルエット透過</small>"])
 
-### - *_physics_process*
+    classDef purple fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef blue fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0369a1;
+    classDef emerald fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#065f46;
 
-```java
-func _physics_process(delta: float) -> void:
-(1) shader_target_nodes.sort_custom(func(a, b): return a.z_index < b.z_index)
-	for shader_target in shader_target_nodes:
-	(2) PositionArray.clear()
-	(3) shader_trigger_nodes.sort_custom(func(a, b): return a.z_index < b.z_index)
-		for shader_trigger in shader_trigger_nodes:
-		(4) if shader_trigger.shader_cast.is_colliding() and shader_target.z_index >= shader_trigger.z_index:
-			(5) PositionArray.append(get_viewport().get_final_transform() * shader_trigger.get_global_transform_with_canvas() * Vector2(0,0))
-	(6) shader_target.material.set_shader_parameter("CircleCentres", PositionArray)
-		shader_target.material.set_shader_parameter("NumCircleCentres", PositionArray.size())
+    class A purple;
+    class B blue;
+    class C emerald;
 ```
 
-1. 対象ノードのリストをzインデックスでソートする。
-2. 項目のリストをクリアする。
-3. トリガーのリストを z-index でソートする
-4. ShaderCast がアクティブかどうか、およびターゲットの z-index がトリガーの z-index よりも高いかどうかをチェックする
-5. トリガーの座標を位置のリストに入れる
-6. シェーダーパラメータに座標を入力する
+---
+
+## 構造の分離: 基本クラスとテンプレート
+
+Daiconの設計では、シェーダー処理ロジックが意図的に2層へ分離されています：
+
+1. **基本クラス `Daicon` (プラグインのコア):** 軽量設計で、`y_sort_enabled = true` を有効化し、トリガーとターゲットのリストを保持します。
+2. **スクリプトテンプレート (`script_templates/Daicon/default.gd`):** `_physics_process` における実際の毎フレーム更新ロジックを含みます。
+
+> [!TIP] なぜ分離されているのか？
+> ノードのスクリプトを拡張する際、テンプレートがプロジェクト内に直接生成されます。導入後すぐに動く完成コードが手に入るだけでなく、アドオン本体に手を加えることなく、独自のシェーダーパラメータ（透過半径、カラー、マスク等）に合わせて自由にカスタマイズ可能です。
 
 ---
-### - *_ready*
 
-```java
-func _ready() -> void:
-	self.set_y_sort_enabled(true)
+## 実際のコード処理
+
+デフォルトテンプレートを使用して `Daicon` スクリプトを拡張すると、内部で以下のループ処理が実行されます：
+
+```gdscript
+func _physics_process(_delta: float) -> void:
+    # 1. Z-Indexの高さ順に両リストをソート
+    shader_target_nodes.sort_custom(func(a, b): return a.z_index < b.z_index)
+    shader_trigger_nodes.sort_custom(func(a, b): return a.z_index < b.z_index)
+    
+    for shader_target in shader_target_nodes:
+        if not is_instance_valid(shader_target): continue
+        var mat := shader_target.material as ShaderMaterial
+        if not mat: continue
+        
+        position_array.clear()
+        
+        # 2. 壁の後ろに隠れているキャラクターを特定
+        for shader_trigger in shader_trigger_nodes:
+            var cast = shader_trigger.shader_cast
+            if cast and cast.is_colliding() and shader_target.z_index >= shader_trigger.z_index:
+                # FRAGCOORD シェーダー計算用の正確な画面座標を取得
+                var screen_pos: Vector2 = shader_trigger.get_global_transform_with_canvas().origin
+                position_array.append(screen_pos)
+        
+        # 3. 障害物レイヤーのシェーダーへ座標配列を送信
+        mat.set_shader_parameter("CircleCentres", position_array)
+        mat.set_shader_parameter("NumCircleCentres", position_array.size())
 ```
 
-set_y_sort_enabled**パラメータは常に**true**である。
+---
+
+## クイックスタート
+
+1. シーンのルートに **Daicon** ノードを追加します。
+2. ノードのスクリプトを拡張し、`Daicon` テンプレートを選択します。
+3. インスペクタで、障害物レイヤーを **Shader Target Nodes** に、プレイヤーを **Shader Trigger Nodes** に登録します。
+4. `addons/daicon/shaders/` フォルダ内の透過シェーダーマテリアルをターゲットレイヤーに設定します。

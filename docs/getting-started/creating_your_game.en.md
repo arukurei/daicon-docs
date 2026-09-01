@@ -1,175 +1,146 @@
 # Creating Your Game
 
-After briefly familiarizing and customizing the scene, let's start creating its functionality. 
+With the basic scene setup complete, let's build out a full gameplay loop: bring the character to life with animations, connect realistic drop shadows, and configure silhouette x-ray shaders for elevated walls.
 
-First of all, let's add all necessary nodes to KinematicDaicon: 
-
-- Sprite2D
-- Camera2D
-- AnimationPlayer
-- AnimationTree
-- and also **MeshInstance3D and CollisionShape3D**.
-
-Place **Mesh** and **Shape** in the corresponding KinematicDaicon cells:
-
-- Click on the “assign” button in the cell parameter
-- Select the desired mesh node
-- Do the same for **Shape**
-
-!!!info
-	Check the Core section. After filling the cells, the list of parameters assigned to them in the core was updated automatically. In addition, the number of child nodes in the core was increased by one. 
-	
-	If you try to click on the return to core icon, the cell and its parameter list will be empty, and the node that was in the cell earlier will return to the editor's visibility. This is the same as if you had clicked the same icon next to the cell itself.
-	
-	(See “Manual : Core” for more information on the operation of the core)
+> [!TIP] Node Creation Tip
+> Avoid duplicating Daicon nodes with `Ctrl+D` if unique slot resources have already been assigned to them. It is much cleaner to create new nodes fresh from the node palette or save pre-configured characters as reusable sub-scenes (`.tscn`).
 
 ---
-## Code
 
-Navigate to the attached .gd file of your KinematicDaicon node. If you did the previous steps correctly (especially the script override is important), your code now looks like this:
+## 1. Assembling the Character
 
-```java
+Add a **KinematicDaicon** node to your scene and attach the standard 2D components as children:
+
+* **Sprite2D** — the character sprite sheet or texture.
+* **Camera2D** — tracking camera.
+* **AnimationPlayer** & **AnimationTree** — to drive state transitions (Idle, Move, Jump).
+
+Now let's slot 3D physical shapes into the core:
+
+1. Create a temporary **CollisionShape3D** in your scene tree (e.g. with a `CapsuleShape3D` shape).
+2. In the `KinematicDaicon` inspector, assign this node into the **Shape Node** slot.
+3. The node will disappear from the 2D tree and inject directly into the hidden 3D core.
+4. *(Optional)* Assign a matching collision shape to **Whisker Shape Node** to ensure the character sorts behind walls accurately.
+
+> [!INFO] Verifying the Core
+> Look at the **Slots** group in the inspector: the parameter dictionary will be populated, and 3D collision wireframes will appear in the 3D viewport. Clicking the reset icon next to the slot will immediately unpack the node back into the visible scene tree.
+
+---
+
+## 2. Character Script & Animation Logic
+
+Extend the script of your `KinematicDaicon` (Right-click node → **«Extend Script»** → select the `KinematicDaicon` template).
+
+Here is a ready-to-run 8-directional movement script with jumping, gravity, and `AnimationTree` blend positions:
+
+```gdscript
 @tool
 extends KinematicDaicon
 
-func _ready() -> void:
-	super._ready()
+const SPEED := 5.0
+const JUMP_VELOCITY := 5.0
+const GRAVITY := 10.0
+const ACCELERATION := 20.0
 
-func _process(delta: float) -> void:
-	super._process(delta)
-
-func _physics_process(delta: float) -> void:
-	if not Engine.is_editor_hint():
-		#LOGIC
-	
-		#LOGIC END
-	
-		#d3.move_and_slide()
-		#update_pos()
-		pass
-
-func _validate_property(property: Dictionary) -> void:
-	super._validate_property(property)
-
-```
-
-The functions “_ready”, “_process” and “_validate_property” contain the “super” construct. It calls these same functions from the root file of the node you have overridden. So this code uses the functionality of its parent node without changing it in any way.
-
-Now let's add the logic and animation system:
-
-```java
-@tool
-extends KinematicDaicon
-
-const SPEED = 5
-const JUMP_VELOCITY = 5
-const gravity = 10
-const accelaration = 20
-@onready var animation_tree : AnimationTree = $AnimationTree
-@onready var animation = animation_tree.get("parameters/playback")
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_playback = animation_tree.get("parameters/playback")
 
 var movement_input := Vector2.ZERO
 
-func _ready() -> void:
-	super._ready()
-	
-func _process(delta: float) -> void:
-	super._process(delta)
-	
-func _validate_property(property: Dictionary) -> void:
-	super._validate_property(property)
-
 func _physics_process(delta: float) -> void:
-	if not Engine.is_editor_hint():
-		movement_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-		var direction := Vector3(movement_input.x, 0, movement_input.y).normalized()
-		if direction != Vector3.ZERO:
-			set_animation_direction(movement_input)
-		
-		var y_vel = d3.velocity.y
-		d3.velocity = d3.velocity.move_toward(direction * SPEED, accelaration * delta)
-		d3.velocity.y = y_vel - gravity * delta
-		
-		if Input.is_action_just_pressed("ui_accept") and d3.is_on_floor():
-			d3.velocity.y += JUMP_VELOCITY
-			
-		d3.move_and_slide()
-		player_animation(direction, d3.velocity)
-		update_pos()
+    if Engine.is_editor_hint(): return
+    
+    var body := core as CharacterBody3D
+    if not body: return
 
-func player_animation(direction, d3_velocity):
-	if d3_velocity == Vector3.ZERO:
-		animation.travel("Idle")
-	elif d3_velocity != Vector3.ZERO:
-		if direction:
-			if d3.is_on_floor():
-				animation.travel("Move")
-			else:
-				animation.travel("Jump")
-		else:
-			if not d3.is_on_floor():
-				animation.travel("Jump Down")
+    # 1. Read 2D input vector
+    movement_input = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+    var direction := Vector3(movement_input.x, 0.0, movement_input.y).normalized()
+    
+    # 2. Feed movement direction into the animation blend tree
+    if direction != Vector3.ZERO:
+        set_animation_direction(movement_input)
 
-func set_animation_direction(direction):
-	animation_tree.set("parameters/Idle/blend_position", direction)
-	animation_tree.set("parameters/Move/blend_position", direction)
-	animation_tree.set("parameters/Jump/blend_position", direction)
-	animation_tree.set("parameters/Jump Down/blend_position", direction)
+    # 3. Horizontal acceleration and gravity
+    var y_vel := body.velocity.y
+    body.velocity = body.velocity.move_toward(direction * SPEED, ACCELERATION * delta)
+    body.velocity.y = y_vel - GRAVITY * delta
+
+    # 4. Jump execution
+    if Input.is_action_just_pressed("ui_accept") and body.is_on_floor():
+        body.velocity.y += JUMP_VELOCITY
+
+    # 5. Move and synchronize the 2D sprite
+    body.move_and_slide()
+    update_player_animation(direction, body.velocity)
+    update_pos()
+
+
+func update_player_animation(direction: Vector3, velocity: Vector3) -> void:
+    var body := core as CharacterBody3D
+    if not body or not animation_playback: return
+
+    if velocity.x == 0 and velocity.z == 0:
+        animation_playback.travel("Idle")
+    else:
+        if body.is_on_floor():
+            animation_playback.travel("Move")
+        else:
+            animation_playback.travel("Jump")
+
+
+func set_animation_direction(direction: Vector2) -> void:
+    if not animation_tree: return
+    animation_tree.set("parameters/Idle/blend_position", direction)
+    animation_tree.set("parameters/Move/blend_position", direction)
+    animation_tree.set("parameters/Jump/blend_position", direction)
 ```
 
 ---
-## StaticDaicon - AnimatedDaicon
 
-> ![static_daicon.png](../assets/images/nodes/static_daicon.png)
->
-> ![animated_daicon.png](../assets/images/nodes/animated_daicon.png)
->
-> For static objects, use the **StaticDaicon** and **AnimatedDaicon** nodes. Their differences can be compared to the differences between StaticBody and AnimatedBody.
->
->The principle of configuration and functioning of both nodes is similar to KinematicDaicon.
-
----
-## RigidDaicon
-
-
-> ![rigid_daicon.png](../assets/images/nodes/rigid_daicon.png)
->
-> For objects with complex physics, there is **RigidDaicon**.
-
----
-## DaiconShadow
+## 3. Adding a Realistic Shadow
 
 > ![daicon_shadow.png](../assets/images/nodes/daicon_shadow.png)
->
-> The DaiconShadow node is a 2D sprite with a built-in **CharacterBody3D** core. It receives the parent daikon node as input and creates a shadow
-> under the object using its core data.
+> 
+> Shadows in Daicon require zero manual wiring — they scan the terrain automatically.
 
-![Pasted image 20250821081813.png](../assets/images/pasted-images/Pasted%20image%2020250821081813.png)
+1. Add a **DaiconShadow** node as a child of your `KinematicDaicon` character.
+2. Assign your shadow blob texture to the sprite's `Texture` property.
+3. Enable **Debug Ray** in the inspector to visualize the real floor scanner ray.
+4. If needed, tweak `footprint_radius` (ground support radius) and `pivot_offset` (pixel offset beneath character feet).
 
-- Place the input node in the **Daicon Parent** parameter (this node will cast the shadow)
-- The **tile_size** and **z_step** parameters are automatically synchronized with the parent
-- Set the **min_distance** and **max_distance** values (see the “Node Reference: DaiconShadow” section)
-- Select **Shadow Mode** - shadow modulation mode (Fade and saturation)
-- Select **Stream Mode** - the behavior mode of the physical body of the core (see section “Node Reference: DaiconShadow”)
-- Add **Shape** (shape.size.y = 0 - this will create the necessary flat collision model)
-
-Next, the **Shape section** is used to dynamically change the shadow collisions and is not required after the settings are complete - the shadow is ready.
+The shadow will automatically detect floor elevation changes during jumps and smoothly fade out as altitude increases.
 
 ---
-## Shaders
 
-The main purpose of the Daicon root node is to draw shaders.
+## 4. Setting Up Silhouette Shaders
 
-On the node parameters panel, there are two lists: triggers and targets.
+The primary purpose of the root **Daicon** node is revealing characters whenever they walk behind elevated walls or roofs:
 
-- Triggers are nodes that contain shader design mechanisms in the kernel, such as ShaderCast.
-- Targets are nodes that receive information from triggers and draw a shader at the coordinates specified for them.
+```mermaid
+graph LR
+    A(["🎯 Shader Trigger Nodes<br><small>Player (KinematicDaicon with ShaderCast)</small>"]) --> B(["⚙️ Daicon (Scene Root)"])
+    B --> C(["🧱 Shader Target Nodes<br><small>Walls and DaiconMapLayers with Shader</small>"])
 
-Daicon handles dynamic updating of effects, sorting lists, and analyzing the state of triggers.
+    classDef purple fill:#f3e8ff,stroke:#9333ea,stroke-width:1.5px,color:#581c87;
+    classDef blue fill:#e0f2fe,stroke:#0284c7,stroke-width:1.5px,color:#0369a1;
+    classDef emerald fill:#d1fae5,stroke:#059669,stroke-width:1.5px,color:#065f46;
 
-!!!Info.
-	The plugin also provides basic shaders, which you can find in the addon directory, in the “shaders” folder.
+    class A purple;
+    class B blue;
+    class C emerald;
+```
 
-Select the environment nodes that will use the shader. For **DaiconMap**, in case layers have been extracted, the shader should be put for each such layer separately.
+1. Make sure your character has a `RayCast3D` assigned to the **Shader Cast Node** slot.
+2. Select the root **Daicon** node in your scene.
+3. Add your player to the **Shader Trigger Nodes** list.
+4. Add walls or `DaiconMapLayer` layers that should reveal characters into the **Shader Target Nodes** list.
+5. Attach one of the cutout shader materials from `addons/daicon/shaders/` to those target layers.
 
-Now it is enough to fill in the list of triggers and targets, and the customization is complete.
+---
+
+## Other Entity Types
+
+* **[StaticDaicon](../node-reference/static_daicon.md):** Use for static props, obstacles, and walls.
+* **[AnimatedDaicon](../node-reference/animated_daicon.md):** Use for moving platforms, doors, and traps.
+* **[RigidDaicon](../node-reference/rigid_daicon.md):** Use for physics-driven boxes, rolling barrels, and debris.

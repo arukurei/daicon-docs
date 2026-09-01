@@ -2,172 +2,65 @@
 
 ![kinematic_daicon.png](../assets/images/nodes/kinematic_daicon.png)
 
-**KinematicDaicon** はキネマティックオブジェクトを表すノードです。動いて相互作用するオブジェクトを作成するのに必要なものがすべて含まれています。
+**KinematicDaicon** — プレイヤーキャラクター、敵、NPC、その他キネマティックな移動を行うあらゆるオブジェクトを作成するための主要ノードです。
+
+内部には完全な3Dコア **`CharacterBody3D`** が組み込まれています。Godotの使い慣れたメソッド（`velocity`、`move_and_slide()`、`is_on_floor()`）でボディを操作でき、ジャンプ、壁のすり抜け、坂道の昇降などすべての挙動が自動的に2D画面へ投影されます。
 
 ---
-## **パラメーター**:
 
-### - *d3*
-<p style="color:#ffb0e0;">CharacterBody3D</p>
-KinematicDaicon のコア。
+## コード
 
----
-### - *whisker*
-<p style="color:#ffb0e0;">Area3D</p>
-これは衝突を追跡し、オブジェクトを正しくレンダリングするために **y** および **z-sorting** 連動します。オブジェクトがバリアの後ろにあるかどうかを判定します。
+シーンにノードを追加し、右クリック → **「スクリプトを拡張」** から `KinematicDaicon` テンプレートを選択します。
 
----
-### - *shader_cast*
-<p style="color:#ffb0e0;">RayCast3D</p>
-**ShaderCast** は特別な目的のノードです。その目的は、プレイヤーの前にあるオブジェクトとの衝突を検出し、それに基づいてシェーダーを描画することです。
+以下は、すぐに使える基本的なキャラクター移動のコード例です：
 
----
-### - *tile_size*
-<p style="color:#ffb0e0;">int</p>
-タイルサイズとは、3D空間において1メートルに相当するピクセル数を決定するものです。
-（要するに、3D空間におけるセルサイズあたりのタイルサイズを指します）
+```gdscript
+@tool
+extends KinematicDaicon
 
----
-### - *y_3d*
-<p style="color:#ffb0e0;">int</p>
-キャラクターのZ軸上の位置。
+const SPEED := 5.0
+const JUMP_VELOCITY := 4.5
+const GRAVITY := 9.8
 
----
-### - *z_step*
-<p style="color:#ffb0e0;">int</p>
-Zステップは、高さレベル間のソートシステムにおけるステップです。
+func _physics_process(delta: float) -> void:
+    # エディタ上ではゲームロジックを実行しない
+    if Engine.is_editor_hint(): return
+    
+    # 1. 3Dコアを取得
+    var body := core as CharacterBody3D
+    if not body: return
 
-例えば、**z_step** = 10の場合、次のように設定されます：
+    # 2. 2D入力を読み取り、3D（X軸およびZ軸）へ変換
+    var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+    var direction := Vector3(input_dir.x, 0.0, input_dir.y).normalized()
 
-レベル -1 = -10
-レベル 0 = 0
-レベル 1 = 10
-レベル 2 = 20
+    # 3. 水平方向の移動
+    if direction != Vector3.ZERO:
+        body.velocity.x = direction.x * SPEED
+        body.velocity.z = direction.z * SPEED
+    else:
+        body.velocity.x = move_toward(body.velocity.x, 0.0, SPEED)
+        body.velocity.z = move_toward(body.velocity.z, 0.0, SPEED)
 
----
-### - *mesh*
-<p style="color:#ffb0e0;">MeshInstance3D</p>
-カーネルに埋め込まれたメッシュ・ノード・セル（インストール後、3Dセクションで見ることができる）。
-セクション「**Core : mesh_properties**」に独自の辞書があります。
+    # 4. 重力とジャンプ（Y軸）
+    if not body.is_on_floor():
+        body.velocity.y -= GRAVITY * delta
+    elif Input.is_action_just_pressed("ui_accept"):
+        body.velocity.y = JUMP_VELOCITY
 
----
-### - *shape*
-<p style="color:#ffb0e0;">Node3D</p>
-コアに埋め込まれたシェイプノードのセル（コリジョンに必要）。
-**CollisionShape3D** または **CollisionPolygon3D** のみをスキップします。
-これは「**Core : shape_properties**」/"の下に独自の辞書を持っています。
-
----
-### *Mesh & Shape-セクション*
-
-「Mesh & Shape」セクションには、MeshとShapeのパラメーターが含まれています。
-
----
-### *Slots-セクション*
-<p style="color:#ffb0e0;">Node3D</p>
-スロット - 開発者ノードをコアに実装する必要がある場合のセル（コード経由の通信のみ）。
-
----
-### *Core-セクション*
-#### - *child_count*
-<p style="color:#ffb0e0;">int</p>
-カーネルの子ノードの数を常にカウントする。
-
----
-#### - *properties*
-<p style="color:#ffb0e0;">Dictionary</p>
-セルを介してカーネルに格納されるノードパラメータの辞書。カーネルの子ノードの動的展開に必要なすべてのパラメータを格納する。
-
----
-### *KinematicBody3D-セクション*
-
-カーネルのルート・ノードのパラメータ・セクション。
-
-`(ドキュメントを見る Godot : CharacterBody3D / KinematicBody3D)`
-
----
-### *CollisionObject3D-セクション*
-
-カーネルのルート・ノードのパラメータ・セクション。
-
-`(ドキュメントを見る Godot : CollisionObject3D)`
-
-!!!info
-	**axis_lock** も含まれる。
-
----
-### *RayCast-セクション*
-
-**Whisker** および **ShaderCast** ノードのパラメーターセクション。
-
-`(Godot のドキュメントを参照：Area3D - RayCast3D)`
-
----
-## **方法**:
-## - *_ready*
-
-各起動時にカーネルをデプロイする。ノードの基本設定を行います。
-
----
-### - *_process*
-
-> エディターでのみ動作します。
-
-2Dでのノードの動きと3Dでのコアの動きを同期させる。
-
----
-### - *update_pos*
-
-```python
-func update_pos(coef = 1):
-	self.position.x = (d3.position.x - offset_3d.x) * tile_size
-	self.position.y = ((d3.position.z - offset_3d.z) - (d3.position.y - offset_3d.y)) * tile_size
-	
-	if whisker.get_overlapping_bodies():
-		if whisker.get_overlapping_bodies()[0].has_meta("z_index"):
-			self.z_index = whisker.get_overlapping_bodies()[0].get_meta("z_index") - 1
-		else:
-			self.z_index = (int(d3.position.y + (offset_3d.y * 1.1))) * z_step - 1
-	else:
-		self.z_index = ((d3.position.y - offset_3d.y) + coef) * z_step + 2
-	
-	d3.set_meta("z_index", self.z_index)
+    # 5. 移動を実行し、2Dスプライトと同期
+    body.move_and_slide()
+    update_pos()
 ```
 
-この関数は，コアの3次元座標を渡して，2次元空間におけるオブジェクトの位置を更新する．
-
-coef はオブジェクトの高さを決定します。
-
----
-### - *get_node_properties*
-
-```java
-func get_node_properties(node: Node) -> Dictionary:
-	var properties : Dictionary = {
-		"Name" : node.name,
-		"Class" : node.get_class(),
-		"Properties" : {}
-	}
-	for prop in node.get_property_list():
-		if prop.usage & PROPERTY_USAGE_STORAGE:
-			properties.Properties[prop.name] = node.get(prop.name)
-	return properties
-```
-
-この関数は、すべてのノードのパラメータ、名前、クラスを辞書に書き込み、それを返します。
+> [!TIP] 3DのZ軸は画面の縦方向（奥行き）に対応
+> 入力値 `input_dir.y`（キーボードの上下）が3D空間の `direction.z` に割り当てられている点に注目してください。これによりキャラクターがシーンの奥行き方向へ移動し、`Y` 軸はジャンプや落下を担当します。
 
 ---
-### - *_expand*
 
-```java
-func _expand()  -> void:
-	_expand_d3()
-	_expand_ray_cast()
-	if mesh_properties:
-		_expand_mesh()
-	if shape_properties:
-		_expand_shape()
-	_expand_slots()
-```
+## コリジョンの設定手順
 
-この関数は、カーネルのデプロイメントを扱う。
+1. シーンに `CollisionShape3D` ノード（`CapsuleShape3D` や `BoxShape3D` など）を追加します。
+2. `KinematicDaicon` のインスペクタで、**Shape Node** スロットに作成したノードを割り当てます。
+3. ノードが2Dシーンツリーから消え、コアの内部へと注入されます。
+4. キャラクターが壁の後ろに隠れた際に正しくソートされるよう、**Whisker Shape Node** にも形状を設定します。

@@ -1,4 +1,4 @@
-## Contribution
+# Contribution
 
 ## How to contribute
 
@@ -24,13 +24,13 @@ If you're tech savvy and want to help make the add-on better, code contributions
 **Examples:**
 
 - New features and ideas
-- Reworking and update old functionality
+- Reworking and updating old functionality
 
 Please raise a [Feature Request](https://github.com/arukurei/Daicon/issues/new/choose) or [Bug Report](https://github.com/arukurei/Daicon/issues/new/choose) before you start any work.
 
 If a bug report or feature proposal already exists and has been in place for a long time, please leave a comment on it and try to implement it!
 
-### Minor changes
+### Minor Changes
 
 **Examples:**
 
