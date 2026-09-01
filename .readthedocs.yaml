@@ -12,6 +12,7 @@ build:
       - pip install mkdocs-git-revision-date-localized-plugin
       - pip install mkdocs-git-authors-plugin
       - pip install mkdocs-izsam-video
+      - pip install mkdocs-callouts --break-system-packages
 
 mkdocs:
   configuration: mkdocs.yml
